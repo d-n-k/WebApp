@@ -15,12 +15,12 @@ button,
 input,
 select,
 textarea {
-    color: #222;
+    /* color: #222; */
 }
 
 html {
     font-size: 1em;
-    line-height: 1.4;
+    line-height: 1em;
 }
 
 /*
@@ -92,24 +92,165 @@ textarea {
     color: #000;
     padding: 0.2em 0;
 }
+* {
+    box-sizing: border-box;
+}
 
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+/* ==========================================================================
+   header
+   ========================================================================== */
+
+header {
+    background-color: black;
+    margin: 0;
+    height: 60px;
+
+}
+
+.layout-wrap {
+    max-width: 1024px;
+    margin: 0 auto;
+    
+
+}
+.layout-wrap > a {
+    float: left;
+    text-decoration: none;
+    font-size: 0px;
+    line-height: 60px;
+}
+.search-box {
+    float: right;
+    line-height: 60px;
+}
+
+/* ==========================================================================
+   body
+   ========================================================================== */
+
+.bground {
+    background: url(../img/body-background.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover; /* For WebKit*/
+    -moz-background-size: cover;    /* Mozilla*/
+    -o-background-size: cover;      /* Opera*/
+    background-size: 150%;         /* Generic*/
+    margin: 0 auto;
+    height: 100%;
+    /*width: 100%; */
+}
+.page-body {
+    background-color: rgba(100,100,100, 0.5);
+    padding:0 15px 0 15px;
+    height: 800px;    
+}
+/* ==========================================================================
+   nav Section
+   ========================================================================== */
+
+.nav-section {
+    width: 32.2%;
+    display: inline-block;
+    height: 124px;
+    margin-top: 20px;
+    position: relative;
+}
+.nav-section:hover .action-list {
+    display: block;
+}
+
+.psection {
+    color: white;
+    font-family: open-sans;
+    display: block;
+    width: 100%;
+    margin: 3px 0 0 0;
+    text-align: center;
+    line-height: 1.1em;
+}
+.psection span {
+    display: block;
+    width: 100%;
+}
+.sec1 {
+    background: url(../img/action-report-new.png) no-repeat center 50px;
+    background-color: black;
+
+}
+.sec2 {
+    background: url(../img/action-report-top.png) no-repeat center 50px;
+    background-color: black;
+    margin: 0 1% 0 1%;
+
+}
+
+.sec3 {
+    background: url(../img/actions-help.png) no-repeat center 50px;
+    background-color: black;
+
+}
 
 
+/* ==========================================================================
+   menu Section
+   ========================================================================== */
+.menu {
+    
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 1em;
+    background-color: #EBEBEB;
+    margin-bottom: 0;
+    /* margin-top: 75px; */
+    display: block;
+}
+.menu-hint {
+    background-color: #EBEBEB;
+    display: block;
+    line-height: 1.2em;
+    
+}
+.menu-hint > p {
+    margin: 0 0 0 10px;
+    color: #a5a5a5;
+    display: block;
+    font-family: open-sans;
+    font-size: 0.725em;   
+}
+
+.arrow {
+    background: url(../img/arrow.png) center no-repeat;
+    position: absolute;
+    height: 12px;
+    width: 16px;
+    top: 5px;
+    right: 13px;
+}
+
+.action-list {
+    display: none;
+    padding-left: 0;
+    margin: 0;
+}
+.action-list li a {
+    text-decoration: none;
+    display: block;
+    color: #a5a5a5;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-bottom: 1px solid lightgrey;
+}
+.action-list li {
+    /* display: block; */
+    background-color: #EBEBEB;
 
 
-
-
-
-
-
-
-
-
-
-
+    
+    
+}
 
 
 

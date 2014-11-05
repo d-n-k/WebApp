@@ -113,7 +113,7 @@ header {
 .layout-wrap {
     max-width: 1024px;
     margin: 0 auto;
-    
+
 
 }
 .layout-wrap > a {
@@ -132,7 +132,7 @@ header {
    ========================================================================== */
 
 .bground {
-    background: url(../img/body-background.jpg) no-repeat center center fixed;
+    background: url(../img/body-background.jpg) repeat center center fixed;
     -webkit-background-size: cover; /* For WebKit*/
     -moz-background-size: cover;    /* Mozilla*/
     -o-background-size: cover;      /* Opera*/
@@ -144,14 +144,14 @@ header {
 .page-body {
     background-color: rgba(100,100,100, 0.5);
     padding:0 15px 0 15px;
-    height: 800px;    
+    height: 1200px;
 }
 /* ==========================================================================
    nav Section
    ========================================================================== */
 
 .nav-section {
-    width: 32.2%;
+    width: 32%;
     display: inline-block;
     height: 124px;
     margin-top: 20px;
@@ -160,13 +160,16 @@ header {
 .nav-section:hover .action-list {
     display: block;
 }
+.nav-section:hover .arrow {
+    transform: rotateZ(180deg);
+}
 
 .psection {
     color: white;
     font-family: open-sans;
     display: block;
     width: 100%;
-    margin: 3px 0 0 0;
+    margin: 1% 0 0 0;
     text-align: center;
     line-height: 1.1em;
 }
@@ -191,35 +194,42 @@ header {
     background-color: black;
 
 }
+.notifications {
+    background: #ebebeb;
+    width: 99.1%;
+    height: 36px;
+    padding: 0 1.5%;
+    margin: 15px 1% 0 0;
+    line-height: 2em;
+    font-size: .8rem;
+}
 
 
 /* ==========================================================================
    menu Section
    ========================================================================== */
 .menu {
-    
     position: absolute;
     bottom: 0;
     width: 100%;
     height: 1em;
     background-color: #EBEBEB;
     margin-bottom: 0;
-    /* margin-top: 75px; */
     display: block;
 }
 .menu-hint {
     background-color: #EBEBEB;
     display: block;
     line-height: 1.2em;
-    
+
 }
 .menu-hint > p {
     margin: 0 0 0 10px;
     color: #a5a5a5;
     display: block;
     font-family: open-sans;
-    font-size: 0.725em;   
-}
+    font-size: 0.725em;
+}pa
 
 .arrow {
     background: url(../img/arrow.png) center no-repeat;
@@ -228,6 +238,8 @@ header {
     width: 16px;
     top: 5px;
     right: 13px;
+    transform: rotateZ(0);
+    transition: all .4s ease;
 }
 
 .action-list {
@@ -244,12 +256,109 @@ header {
     border-bottom: 1px solid lightgrey;
 }
 .action-list li {
-    /* display: block; */
     background-color: #EBEBEB;
+}
+
+/* ==========================================================================
+   Tabs
+   ========================================================================== */
+
+.tabs {
+    width: 100%;
+
+}
+
+.tab-hdrs li {
+    float: left;
+    width: 21%;
+    height: 50px;
+    margin-right: 2%;
+    line-height: 50px;
+    text-align: center;
+    font-size: .8rem;
+    text-decoration: none;
+    list-style: none;
+}
+
+.tab-hdrs li > a {
+    background: #646464;
+    color: #fff;
+    display: block;
+    font-size: inherit;
+    text-decoration: none;
+}
 
 
-    
-    
+.tab-hdrs li > a.active {
+    color: inherit;
+    background: #ebebeb;
+}
+.fa {
+    margin: 2%;
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.tab {
+    width: 100%;
+    background: #ebebeb;
+    height: 950px;
+    margin-top: -20px;
+    display: none;
+}
+
+.tab.active {
+  display: block;
+}
+/* ==========================================================================
+   Tab content
+   ========================================================================== */
+.tab-content-header {
+    width: 100%;
+    padding-top: 20px;
+    position: relative;
+}
+.choose-report {
+    width: 280px;
+    position: relative;
+    height: 36px;
+    background: #fff;
+    overflow: hidden;
+    font-size: .8rem;
+    border: 1px solid #fff;
+    margin-left: 10px;
+}
+.action-btn {
+    position: absolute;
+    top: 20px;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    text-indent: -9999px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+.action-btn.expand {
+    background-image: url(../img/expand.png);
+    right: 50px;
+}
+.action-btn.settings {
+    background-image: url(../img/settings.png);
+    right: 10px;
+}
+
+/* ==========================================================================
+   Iframe
+   ========================================================================== */
+iframe {
+    width: 100%;
+    height: 800px;
+    margin-top: 20px;
 }
 
 

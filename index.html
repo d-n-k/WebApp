@@ -14,6 +14,7 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -31,9 +32,9 @@
                 </form>
               </div>
         </header>
-        <div class="bground">
-            <div class="page-body layout-wrap">
-                <div class="notifications">
+        <div class="bground clearfix">
+            <div class="page-body layout-wrap clearfix">
+                <div class="notifications">wannabe dynamic
                 </div>
 
                 <nav>
@@ -96,31 +97,40 @@
                 </nav>
 
                 <div class="tabs">
-                    <ul>
-                        <li><a href="#quick-reports">Quick Reports</a>
+                    <ul class="tab-hdrs clearfix">
+                        <li><a class="active" href="#quick-reports"><i class="fa fa-external-link"></i>Quick Reports</a>
                         </li>
-                        <li><a href="#fmy-folders">My Folders</a>
+                        <li><a href="#fmy-folders"><i class="fa fa-star-o"></i>My Folders</a>
                         </li>
-                        <li><a href="#my-team-folders">My Team Folders</a>
+                        <li><a href="#my-team-folders"><i class="fa fa-folder-open-o"></i>My Team Folders</a>
                         </li>
-                        <li><a href="#public-folders">Public Folders</a>
+                        <li><a href="#public-folders"><i class="fa fa-file-o"></i>Public Folders</a>
                         </li>
                     </ul>
 
-                    <div id="quick-reports">
+                    <div id="quick-reports" class="tab active">
+                        <div class="tab-content-header">
+                            <select class="choose-report" name="choose-report" id="choose-report-select">
+                                <option value="netcraft">netcraft</option>
+                                <option value="ynet">ynet</option>
+                            </select>
+                            <a class="action-btn expand" href="#">expand</a>
+                            <a class="action-btn settings" href="#">settings</a>
+                        </div>
+                        <iframe id="tab1" src="http://netcraft.co.il" frameborder="0"></iframe>
                     </div>
 
-                    <div id="fmy-folders">
+                    <div id="fmy-folders" class="tab">
                     </div>
 
-                    <div id="my-team-folders">
+                    <div id="my-team-folders" class="tab">
                     </div>
 
-                    <div id="public-folders">
+                    <div id="public-folders" class="tab">
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>

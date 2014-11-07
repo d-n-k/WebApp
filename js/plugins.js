@@ -24,12 +24,95 @@
 // Place any jQuery/helper plugins in here.
 //
 /**
+/**
  * Utils library
  */
 
 var UTILS = (function () {
 
     return {
+        qs: function (selector) {
+            return document.querySelector(selector);
+        },
+
+        qsa: function (selector) {
+            return document.querySelectorAll(selector);
+        },
+
+        /**
+         * Cross browser even handler
+         *
+         * @param {Object}   elm     Element on which the event will be bound
+         * @param {string}   type    Event type or types (e.g. 'click', 'click input')
+         * @param {Function} handler Callback function to run when event is fired
+         */
+        addEvent: function (elm, type, handler) {
+            var types = type.split(' '),
+                ieHandler;
+
+            // Recurse if multiple event types were given
+            if (types.length > 1) {
+                // On each iteration, remove the first value in the array
+                while (types.length) {
+                    UTILS.addEvent(elm, types.shift(), handler);
+                }
+
+                return;
+            }
+
+            if (window.addEventListener) {
+                // Modern browsers
+                elm.addEventListener(type, handler, false);
+            } else if (window.attachEvent) {
+                // IE8 and below
+                // Required for normalizing the "event" object
+                ieHandler = function (e) {
+                    e.target = e.target || e.srcElement;
+                    e.currentTarget = elm;
+
+                    e.stopPropagation = e.stopPropagation || function () {
+                        e.cancelBubble = true;
+                    };
+
+                    e.preventDefault = e.preventDefault || function () {
+                        e.returnValue = false;
+                    };
+
+                    return handler.call(elm, e);
+                };
+
+                // Save a reference to the handler as a unique key
+                elm[type + handler] = ieHandler;
+                elm.attachEvent('on' + type, ieHandler);
+            }
+        },
+
+        /**
+         * Cross browser event removal
+         *
+         * @param {Object}   elm     Element on which the event should be unbound
+         * @param {string}   type    Event type to unbind
+         * @param {Function} handler Reference to the original callback function
+         */
+        removeEvent: function (elm, type, handler) {
+            var handlerRef;
+
+            if (window.removeEventListener) {
+                // Modern browsers
+                elm.removeEventListener(type, handler, false);
+            } else if (window.detachEvent) {
+                // IE8 and below
+                handlerRef = elm[type + handler];
+
+                // Make sure the handler key exists
+                if (handlerRef) {
+                    elm.detachEvent('on' + type, handlerRef);
+                    // Remove the key from the object, prevent memory leaks
+                    delete elm[type + handler];
+                }
+            }
+        },
+
         /**
          * Check if a given value is a plain Object
          *
@@ -116,70 +199,3 @@ var UTILS = (function () {
         }
     };
 }());
-function(){
-  // I test for features at the beginning of the declaration instead of everytime that we have to add an event.
-  if(document.addEventListener) {
-    window.addEvent = function (elem, type, handler, useCapture){
-      elem.addEventListener(type, handler, !!useCapture);
-      return handler; // for removal purposes
-    }
-    window.removeEvent = function (elem, type, handler, useCapture){
-      elem.removeEventListener(type, handler, !!useCapture);
-      return true;
-    }
-  }
-  else if (document.attachEvent) {
-    window.addEvent = function (elem, type, handler) {
-      type = "on" + type;
-      // Bounded the element as the context
-      // Because the attachEvent uses the window object to add the event and we don't want to polute it.
-      var boundedHandler = function() {
-        return handler.apply(elem, arguments);
-      };
-      elem.attachEvent(type, boundedHandler);
-      return boundedHandler; // for removal purposes
-    }
-    window.removeEvent = function(elem, type, handler){
-      type = "on" + type;
-      elem.detachEvent(type, handler);
-      return true;
-    }
-  }
-  else { // FALLBACK ( I did some test for both your code and mine, the tests are at the bottom. )
-    // I removed wrapping from your implementation and added closures and memoization.
-    // Browser don't support W3C or MSFT model, go on with traditional
-    window.addEvent = function(elem, type, handler){
-      type = "on" + type;
-      // Applying some memoization to save multiple handlers
-      elem.memoize = elem.memoize || {};
-      // Just in case we haven't memoize the event type yet.
-      // This code will be runned just one time.
-      if(!elem.memoize[type]){
-        elem.memoize[type] = { counter: 1 };
-        elem[type] = function(){
-          for(key in nameSpace){
-            if(nameSpace.hasOwnProperty(key)){
-              if(typeof nameSpace[key] == "function"){
-                nameSpace[key].apply(this, arguments);
-              };
-            };
-          };
-        };
-      };
-      // Thanks to hoisting we can point to nameSpace variable above.
-      // Thanks to closures we are going to be able to access its value when the event is triggered.
-      // I used closures for the nameSpace because it improved 44% in performance in my laptop.
-      var nameSpace = elem.memoize[type], id = nameSpace.counter++;
-      nameSpace[id] = handler;
-      // I return the id for us to be able to remove a specific function binded to the event.
-      return id;
-    };
-    window.removeEvent = function(elem, type, handlerID){
-      type = "on" + type;
-      // I remove the handler with the id
-      if(elem.memoize && elem.memoize[type] && elem.memoize[type][handlerID]) elem.memoize[type][handlerID] = undefined;
-      return true;
-    };
-
-  };
-})();

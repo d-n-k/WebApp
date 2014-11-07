@@ -194,7 +194,7 @@ header {
     background-color: black;
 
 }
-.notifications {
+#notification {
     background: #ebebeb;
     width: 99.1%;
     height: 36px;
@@ -202,6 +202,7 @@ header {
     margin: 15px 1% 0 0;
     line-height: 2em;
     font-size: .8rem;
+    display: block;
 }
 
 

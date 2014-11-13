@@ -25,22 +25,52 @@
 //
 /**
 /**
- * Utils library
+ * Utils library v4
  */
-
+/*Globals UTILS*/
 var UTILS = (function () {
 
     return {
+        /**
+         * Shorthand for `querySelector`
+         *
+         * @param  {string} selector CSS like selector
+         * @return {Object}          DOM Node
+         */
         qs: function (selector) {
             return document.querySelector(selector);
         },
 
+        /**
+         * Shorthand for `querySelectorAll`
+         *
+         * @param  {string} selector CSS like selector
+         * @return {Object}          DOM NodeList
+         */
         qsa: function (selector) {
             return document.querySelectorAll(selector);
         },
 
+        hasClass: function (ele,cls) {
+            return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+        },
+
+        addClass: function (ele,cls) {
+            if (!UTILS.hasClass(ele,cls)) {
+            ele.className += " "+cls;
+            }
+        },
+
+        removeClass: function (ele,cls) {
+          if (UTILS.hasClass(ele,cls)) {
+            var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+            ele.className=ele.className.replace(reg,' ');
+          }
+        },
+
+
         /**
-         * Cross browser even handler
+         * Cross browser event handler
          *
          * @param {Object}   elm     Element on which the event will be bound
          * @param {string}   type    Event type or types (e.g. 'click', 'click input')
@@ -60,15 +90,16 @@ var UTILS = (function () {
                 return;
             }
 
+            // Modern browsers and IE9+
             if (window.addEventListener) {
-                // Modern browsers
                 elm.addEventListener(type, handler, false);
+            // IE8
             } else if (window.attachEvent) {
-                // IE8 and below
-                // Required for normalizing the "event" object
+                // Required for normalizing the "event" object,
+                // to have the same API as addEventListener
                 ieHandler = function (e) {
                     e.target = e.target || e.srcElement;
-                    e.currentTarget = elm;
+                    e.currentTarget = e.currentTarget || elm;
 
                     e.stopPropagation = e.stopPropagation || function () {
                         e.cancelBubble = true;
@@ -81,9 +112,106 @@ var UTILS = (function () {
                     return handler.call(elm, e);
                 };
 
-                // Save a reference to the handler as a unique key
+                // Save a reference to the handler function with a unique key
                 elm[type + handler] = ieHandler;
+
+                // Support triggering custom events
+                // Save event handlers in a special property on elm
+                elm._events = elm._events || {};
+                // Init event handlers array for the specific type, if doesn't exist
+                if (!elm._events[type]) {
+                    elm._events[type] = [handler];
+                // Add another handler, unless it already exists
+                } else if (elm._events[type].toString().indexOf(handler) < 0) {
+                    elm._events[type].push(handler);
+                }
+
+                // Bind the event, the IE way
                 elm.attachEvent('on' + type, ieHandler);
+            }
+        },
+
+        /**
+         * Check if Event constructors are supported
+         *
+         * @return {Boolean}
+         */
+        isModernEvent: function () {
+            try {
+                if (new Event('submit', {bubbles: false}).bubbles !== false) {
+                    return false;
+                } else if (new Event('submit', {bubbles: true}).bubbles !== true) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (e) {
+                return false;
+            }
+        },
+
+        /**
+         * Trigger an event on a specific element
+         *
+         * Note:
+         * - bubbles/cancelable - `false` by default (not supported in IE8)
+         *
+         * @param  {Object} elm      DOM Node
+         * @param  {string} type     Event type (e.g. 'click', 'customEvent')
+         * @param  {Object} options  Options object (e.g. bubbles, cancelable)
+         */
+        emitEvent: function (elm, type, options) {
+            var evt,
+                bubbles,
+                cancelable,
+                // Will be used as a fallback event object for IE8
+                eFallback;
+
+            // Support Event options
+            options = options || {};
+            bubbles = options.bubbles !== undefined ? options.bubbles : false;
+            cancelable = options.cancelable !== undefined ? options.cancelable : false;
+
+            // Create an event object
+            // Modern browsers (except IE Any)
+            if (UTILS.isModernEvent()) {
+                evt = new Event(type, {
+                    bubbles: bubbles,
+                    cancelable: cancelable
+                });
+            // IE 9+
+            } else if (document.createEvent) {
+                evt = document.createEvent('Event');
+                evt.initEvent(type, bubbles, cancelable);
+            // IE 8
+            } else {
+                evt = document.createEventObject();
+            }
+
+            // Trigger the event
+            // Modern browsers and IE9+
+            if (elm.dispatchEvent) {
+                elm.dispatchEvent(evt);
+            // IE8
+            } else if (elm.fireEvent) {
+                // `fireEvent` will fail on non real events (i.e. custom events)
+                try {
+                    elm.fireEvent('on' + type, evt);
+                } catch (e) {
+                    // If we have any event handlers saved during `addEvent`
+                    if (elm._events && elm._events[type]) {
+                        // Support minimal Event properties
+                        eFallback = {
+                            target: elm,
+                            currentTarget: elm
+                        };
+
+                        // Trigger all event handlers for this event type
+                        for (var i = 0; i < elm._events[type].length; i++) {
+                            elm._events[type][i].call(elm, eFallback);
+                        }
+                    }
+                }
             }
         },
 

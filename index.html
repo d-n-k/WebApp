@@ -96,19 +96,19 @@
                     </div>
                 </nav>
 
-                <div class="tabs">
+                <div class="tabs" role="tablist">
                     <ul class="tab-hdrs clearfix">
-                        <li><a class="active" href="#quick-reports"><i class="fa fa-external-link"></i>Quick Reports</a>
+                        <li><a role="tab" tabIndex="1" href="#quick-reports"><i class="fa fa-external-link"></i>Quick Reports</a>
                         </li>
-                        <li><a href="#fmy-folders"><i class="fa fa-star-o"></i>My Folders</a>
+                        <li><a role="tab" tabIndex="2" href="#fmy-folders"><i class="fa fa-star-o"></i>My Folders</a>
                         </li>
-                        <li><a href="#my-team-folders"><i class="fa fa-folder-open-o"></i>My Team Folders</a>
+                        <li><a role="tab" tabIndex="3" href="#my-team-folders"><i class="fa fa-folder-open-o"></i>My Team Folders</a>
                         </li>
-                        <li><a href="#public-folders"><i class="fa fa-file-o"></i>Public Folders</a>
+                        <li><a role="tab" tabIndex="4" href="#public-folders"><i class="fa fa-file-o"></i>Public Folders</a>
                         </li>
                     </ul>
 
-                    <div id="quick-reports" class="tab active">
+                    <div id="quick-reports" class="tab-content" role="tabpanel">
                         <div class="tab-content-header">
                             <select class="choose-report" name="choose-report" id="choose-report-select">
                                 <option value="netcraft">netcraft</option>
@@ -117,16 +117,16 @@
                             <a class="action-btn expand" href="#">expand</a>
                             <a class="action-btn settings" href="#">settings</a>
                         </div>
-                        <iframe id="tab1" src="http://netcraft.co.il" frameborder="0"></iframe>
+                        <!-- <iframe id="tab1" src="http://netcraft.co.il" frameborder="0"></iframe> -->
                     </div>
 
-                    <div id="fmy-folders" class="tab">
+                    <div id="fmy-folders" class="tab-content" role="tabpanel">
                     </div>
 
-                    <div id="my-team-folders" class="tab">
+                    <div id="my-team-folders" class="tab-content" role="tabpanel">
                     </div>
 
-                    <div id="public-folders" class="tab">
+                    <div id="public-folders" class="tab-content" role="tabpanel">
                     </div>
                 </div>
             </div>

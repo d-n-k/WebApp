@@ -293,6 +293,7 @@ header {
 .tab-hdrs li > a.active {
     color: inherit;
     background: #ebebeb;
+    display: block;
 }
 .fa {
     margin: 2%;
@@ -305,17 +306,19 @@ header {
 }
 
 
-.tab {
+.tab-content {
     width: 100%;
     background: #ebebeb;
     height: 950px;
     margin-top: -20px;
     display: none;
 }
-
-.tab.active {
-  display: block;
+.tab-content .active {
+    display: block;
 }
+/* .tab.active {
+  display: block;
+} */
 /* ==========================================================================
    Tab content
    ========================================================================== */

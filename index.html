@@ -109,13 +109,51 @@
                     </ul>
 
                     <div id="quick-reports" class="tab-content" role="tabpanel">
-                        <div class="tab-content-header">
+                        <div class="tab-content-header clearfix">
                             <select class="choose-report" name="choose-report" id="choose-report-select">
                                 <option value="netcraft">netcraft</option>
                                 <option value="ynet">ynet</option>
                             </select>
                             <a class="action-btn expand" href="#">expand</a>
                             <a class="action-btn settings" href="#">settings</a>
+                        </div>
+
+
+
+                        <div class="content-reports">
+                            <form class="reports" id="form">
+                                <fieldset class="report-row">
+                                    <span>Report 01</span>
+                                    <label for="name1">Name</label>
+                                    <input type="text" name="site-name1" id="name1"
+                                    class="site-name" required="required" >
+                                    <label for="url1" class="site-url">URL</label>
+                                    <input type="url" name="url1" id="url1"
+                                    required="required" >
+                                </fieldset>
+
+                                <fieldset class="report-row">
+                                    <span>Report 02</span>
+                                    <label for="name2">Name</label>
+                                    <input type="text" name="site-name2" id="name2"
+                                    class="site-name">
+                                    <label for="url2" class="site-url">URL</label>
+                                    <input type="url" name="url2" id="url2">
+                                </fieldset>
+
+                                <fieldset class="report-row">
+                                    <span>Report 03</span>
+                                    <label for="name3">Name</label>
+                                    <input type="text" name="site-name3" id="name3"
+                                    class="site-name">
+                                    <label for="url3" class="site-url">URL</label>
+                                    <input type="url" name="url3" id="url3">
+                                </fieldset>
+
+                                <span class='system-message'></span>
+                                <button type="submit" class="submit_btn">Save</button>
+                                <button type="button" class="cancel_btn">Cancel</button>
+                            </form>
                         </div>
                         <!-- <iframe id="tab1" src="http://netcraft.co.il" frameborder="0"></iframe> -->
                     </div>

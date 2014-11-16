@@ -330,12 +330,12 @@ header {
 .choose-report {
     width: 280px;
     position: relative;
-    height: 36px;
+    height: 32px;
     background: #fff;
     overflow: hidden;
     font-size: .8rem;
     border: 1px solid #fff;
-    margin-left: 10px;
+    margin-left: 2%;
 }
 .action-btn {
     position: absolute;
@@ -347,14 +347,72 @@ header {
     background-repeat: no-repeat;
     background-position: 50% 50%;
 }
+
+.action-btn.settings:focus,
+.action-btn.settings:active
+.action-btn.settings:hover {
+    background-color: white;
+}
 .action-btn.expand {
     background-image: url(../img/expand.png);
-    right: 50px;
+    right: 59px;
 }
 .action-btn.settings {
     background-image: url(../img/settings.png);
-    right: 10px;
+    right: 2%;
 }
+/* ==========================================================================
+   Reports Form
+   ========================================================================== */
+.content-reports {
+    width: 96%;
+    height: 210px;
+    background-color: white;
+    margin: 0.9% 2% 0 2%;
+    position: relative;
+}
+.reports {
+    height: 210px;
+    padding-top: 1.5%;
+}
+.report-row {
+    background-color: #DCDADA;
+    margin: 1% 2% 0 2%;
+    color: #777676;
+    line-height: 2em;
+    font-size: .8em;
+    padding: 0.5% 0 0.5% 1%;
+}
+.report-row label {
+    margin: 0 2% 0 8%;
+}
+.report-row input {
+    width: 30%;
+}
+
+.submit_btn {
+    height: 30px;
+    float: right;
+    margin: 1% 2% 1% 5%;
+    background-color: #000;
+    color: white;
+    width: 100px;
+    border: none;
+}
+.cancel_btn {
+    height: 30px;
+    float: right;
+    margin: 1% -4% 1% 5%;
+    font-size: 0.8em;
+    text-decoration: underline;
+    color: black;
+    background-color: white;
+    width: 100px;
+    border: none;
+
+}
+
+
 
 /* ==========================================================================
    Iframe

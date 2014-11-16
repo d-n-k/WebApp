@@ -143,7 +143,7 @@ header {
 }
 .page-body {
     background-color: rgba(100,100,100, 0.5);
-    padding:0 15px 0 15px;
+    padding:0 1% 0 1%;
     height: 1200px;
 }
 /* ==========================================================================
@@ -313,12 +313,12 @@ header {
     margin-top: -20px;
     display: none;
 }
-.tab-content .active {
+
+.active {
     display: block;
 }
-/* .tab.active {
-  display: block;
-} */
+
+
 /* ==========================================================================
    Tab content
    ========================================================================== */

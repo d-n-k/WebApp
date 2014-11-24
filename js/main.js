@@ -7,17 +7,16 @@ window.onload = (function() {
 		},
 		fail: function (err) {
 			document.getElementById("notification").style.display = "none";
-
 		}
-
 	});
 	var tabContainer = UTILS.qs('.tab-hdrs'),
 		qrSettings = UTILS.qs('.tab-content'),
-		/*mtfSettings = UTILS.qs('.js-mtfTabSettings'),*/
+		repContent = UTILS.qs('content-reports'),
 		allTabs = UTILS.qsa('a[role="tab"]'),
-		tabBody = UTILS.qsa('div[role="tabpanel"]');
+		tabBody = UTILS.qsa('div[role="tabpanel"]'),
+		settingsBtn = UTILS.qs('settings'),
+		inpFocus = UTILS.qs('site-name');
 
-console.log(allTabs);
 
 	var getElmAttribute = function(elm) {
 	    return elm.getAttribute('href').split('#')[1];
@@ -29,22 +28,6 @@ console.log(allTabs);
 			matchingPanel = document.getElementById(tabAttr);
 			return matchingPanel;
 	};
-
-	/*var addClass = function(nodeElm){
-		nodeElm.classList.add('active');
-		nodeElm.setAttribute('aria-selected', 'true');
-		nodeElm.removeAttribute('aria-hidden');
-		return nodeElm;
-	};*/
-
-	/*var removeClass = function(nodeElm){
-		nodeElm.classList.remove('active');
-		nodeElm.setAttribute('aria-hidden', 'true');
-		nodeElm.removeAttribute('aria-selected');
-		return nodeElm;
-	};*/
-	var qrSettingsClass = UTILS.hasClass(qrSettings, 'hidden');
-	   /* mtfClass = UTILS.hasClass(mtfSettings, 'hidden');*/
 
 	var setTab = function(){
 		var currentHash = location.hash.replace('panel-', '');
@@ -60,12 +43,20 @@ console.log(allTabs);
 
 				UTILS.removeClass(currentElm,'active');
 				UTILS.removeClass(currentActivePanel, 'active');
+				currentActivePanel.removeAttribute('aria-selected', 'true');
+				currentElm.removeAttribute('aria-selected', 'true');
+				currentActivePanel.setAttribute('aria-hidden');
+				currentElm.setAttribute('aria-hidden');
+			}
 
-			if(currentHash === ('#' + currentElmAttr)){
+			if(currentHash === ('#' + currentElmAttr)) {
 				UTILS.addClass(currentElm,'active');
 				UTILS.addClass(currentActivePanel,'active');
+				currentActivePanel.setAttribute('aria-selected', 'true');
+				currentElm.setAttribute('aria-selected', 'true');
+				currentActivePanel.removeAttribute('aria-hidden');
+				currentElm.removeAttribute('aria-hidden');
 			}
-		}
 	};
 
 	var changeHash = function(e){
@@ -75,6 +66,15 @@ console.log(allTabs);
 
 		location.hash = 'panel-' + tabAttr.replace('#', '');
 	};
+
+	var toggleSettings = function(e) {
+		e.preventDefault();
+		var target = e.target;
+		UTILS.addClass(target,'activeSet');
+		UTILS.addclass(repContent,'activeRep');
+		inpFocus.focus();
+	};
+
 /*
 	var keypressOpenTab = function(e){
 		e.preventDefault();
@@ -117,8 +117,8 @@ console.log(allTabs);
 
 	setTab();
 
-	/*UTILS.addEvent(qrSettingsBtn, 'click', toggleSettings);
-	UTILS.addEvent(mtfSettingsBtn, 'click', toggleSettings);*/
+	UTILS.addEvent(settingsBtn, 'click', toggleSettings);
+	/*UTILS.addEvent(mtfSettingsBtn, 'click', toggleSettings);*/
 	UTILS.addEvent(tabContainer, 'click', changeHash);
 	/*UTILS.addEvent(tabContainer, 'keypress', keypressOpenTab);*/
 	UTILS.addEvent(window, 'hashchange', setTab);

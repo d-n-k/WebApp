@@ -43,19 +43,19 @@ window.onload = (function() {
 
 				UTILS.removeClass(currentElm,'active');
 				UTILS.removeClass(currentActivePanel, 'active');
-				currentActivePanel.removeAttribute('aria-selected', 'true');
+				/*currentActivePanel.removeAttribute('aria-selected', 'true');
 				currentElm.removeAttribute('aria-selected', 'true');
 				currentActivePanel.setAttribute('aria-hidden');
-				currentElm.setAttribute('aria-hidden');
+				currentElm.setAttribute('aria-hidden');*/
 			}
 
 			if(currentHash === ('#' + currentElmAttr)) {
 				UTILS.addClass(currentElm,'active');
 				UTILS.addClass(currentActivePanel,'active');
-				currentActivePanel.setAttribute('aria-selected', 'true');
+				/*currentActivePanel.setAttribute('aria-selected', 'true');
 				currentElm.setAttribute('aria-selected', 'true');
 				currentActivePanel.removeAttribute('aria-hidden');
-				currentElm.removeAttribute('aria-hidden');
+				currentElm.removeAttribute('aria-hidden');*/
 			}
 	};
 

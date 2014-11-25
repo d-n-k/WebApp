@@ -28,6 +28,10 @@
  * Utils library v4
  */
 /*Globals UTILS*/
+/**
+ * JS Library v4
+ */
+
 var UTILS = (function () {
 
     return {
@@ -50,7 +54,6 @@ var UTILS = (function () {
         qsa: function (selector) {
             return document.querySelectorAll(selector);
         },
-
         hasClass: function (ele,cls) {
             return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
         },
@@ -67,7 +70,6 @@ var UTILS = (function () {
             ele.className=ele.className.replace(reg,' ');
           }
         },
-
 
         /**
          * Cross browser event handler

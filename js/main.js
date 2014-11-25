@@ -117,7 +117,7 @@ window.onload = (function() {
 
 	setTab();
 
-	UTILS.addEvent(settingsBtn, 'click', toggleSettings);
+	/*UTILS.addEvent(settingsBtn, 'click', toggleSettings);*/
 	/*UTILS.addEvent(mtfSettingsBtn, 'click', toggleSettings);*/
 	UTILS.addEvent(tabContainer, 'click', changeHash);
 	/*UTILS.addEvent(tabContainer, 'keypress', keypressOpenTab);*/

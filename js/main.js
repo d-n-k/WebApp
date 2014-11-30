@@ -67,13 +67,13 @@ window.onload = (function() {
 		location.hash = 'panel-' + tabAttr.replace('#', '');
 	};
 
-	var toggleSettings = function(e) {
+	/*var toggleSettings = function(e) {
 		e.preventDefault();
 		var target = e.target;
 		UTILS.addClass(target,'activeSet');
 		UTILS.addclass(repContent,'activeRep');
 		inpFocus.focus();
-	};
+	};*/
 
 /*
 	var keypressOpenTab = function(e){

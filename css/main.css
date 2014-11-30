@@ -311,7 +311,7 @@ header {
     background: #ebebeb;
     height: 950px;
     margin-top: -20px;
-    /* display: none; */
+    display: none;
 }
 
 .active {

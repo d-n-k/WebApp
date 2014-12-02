@@ -230,7 +230,7 @@ header {
     display: block;
     font-family: open-sans;
     font-size: 0.725em;
-}pa
+}
 
 .arrow {
     background: url(../img/arrow.png) center no-repeat;
@@ -349,18 +349,20 @@ header {
 }
 
 .action-btn.settings:focus,
-.action-btn.settings:active
-.action-btn.settings:hover {
+.action-btn.settings:active,
+.action-btn.settings:hover,
+.action-btn.expand:hover {
     background-color: white;
 }
 .action-btn.expand {
     background-image: url(../img/expand.png);
     right: 59px;
 }
+
 .action-btn.settings {
     background-image: url(../img/settings.png);
     right: 2%;
-    background-color: white;
+    /* background-color: white; */
 
 }
 /* ==========================================================================
@@ -391,15 +393,15 @@ header {
     margin: 0 2% 0 8%;
 }
 .report-row input {
-    width: 30%;
+    width: 25%;
 }
 
 .submit_btn {
     height: 30px;
     float: right;
     margin: 1% 2% 1% 5%;
-    background-color: #000;
     color: white;
+    background-color: #000;
     width: 100px;
     border: none;
 }
@@ -417,6 +419,7 @@ header {
 }
 .activeSet {
     display: block;
+    background-color: white;
 }
 
 .activeRep {

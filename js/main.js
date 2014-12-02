@@ -10,12 +10,13 @@ window.onload = (function() {
 		}
 	});
 	var tabContainer = UTILS.qs('.tab-hdrs'),
-		qrSettings = UTILS.qs('.tab-content'),
-		repContent = UTILS.qs('content-reports'),
+		expnd = UTILS.qs('.expand'),
+		repContent = UTILS.qs('.content-reports'),
 		allTabs = UTILS.qsa('a[role="tab"]'),
 		tabBody = UTILS.qsa('div[role="tabpanel"]'),
-		settingsBtn = UTILS.qs('settings'),
-		inpFocus = UTILS.qs('site-name');
+		settingsBtn = UTILS.qs('.settings'),
+		cnclBtn = UTILS.qs('.cancel_btn'),
+		inpFocus = UTILS.qs('.site-name');
 
 
 	var getElmAttribute = function(elm) {
@@ -43,19 +44,19 @@ window.onload = (function() {
 
 			UTILS.removeClass(currentElm,'active');
 			UTILS.removeClass(currentActivePanel, 'active');
-			/*currentActivePanel.removeAttribute('aria-selected', 'true');
+			currentActivePanel.removeAttribute('aria-selected', 'true');
 			currentElm.removeAttribute('aria-selected', 'true');
-			currentActivePanel.setAttribute('aria-hidden');
-			currentElm.setAttribute('aria-hidden');*/
+			currentActivePanel.setAttribute('aria-hidden', 'false');
+			currentElm.setAttribute('aria-hidden', 'false');
 
 
 			if(currentHash === ('#' + currentElmAttr)) {
 				UTILS.addClass(currentElm,'active');
 				UTILS.addClass(currentActivePanel,'active');
-				/*currentActivePanel.setAttribute('aria-selected', 'true');
+				currentActivePanel.setAttribute('aria-selected', 'true');
 				currentElm.setAttribute('aria-selected', 'true');
-				currentActivePanel.removeAttribute('aria-hidden');
-				currentElm.removeAttribute('aria-hidden');*/
+				currentActivePanel.removeAttribute('aria-hidden', 'true');
+				currentElm.removeAttribute('aria-hidden', 'true');
 			}
 		}
 	};
@@ -68,13 +69,28 @@ window.onload = (function() {
 		location.hash = 'panel-' + tabAttr.replace('#', '');
 	};
 
-	/*var toggleSettings = function(e) {
+	var toggleSettings = function(e) {
 		e.preventDefault();
 		var target = e.target;
 		UTILS.addClass(target,'activeSet');
-		UTILS.addclass(repContent,'activeRep');
+		UTILS.addClass(repContent,'activeRep');
 		inpFocus.focus();
-	};*/
+	};
+
+	var cancelBtn = function(e) {
+		e.preventDefault();
+		UTILS.removeClass(settingsBtn,'activeSet');
+		UTILS.removeClass(repContent,'activeRep');
+
+	};
+
+	var expand = function(e) {
+		e.preventDefault();
+		var curentIframe = UTILS.qs('#tab1'),
+			currentURL = curentIframe.src;
+		window.open(currentURL, '_blank');
+		window.focus();
+	};
 
 /*
 	var keypressOpenTab = function(e){
@@ -97,29 +113,12 @@ window.onload = (function() {
 		}
 	};*/
 
-	/*var toggleSettings = function(e){
-		e.preventDefault();
-
-		if (qrSettingsClass || mtfClass){
-			this.classList.add('active');
-			qrSettings.classList.remove('hidden');
-			mtfSettings.classList.remove('hidden');
-			qrSettingsClass = false;
-			mtfClass = false;
-			inputFieldsQr[0].focus();
-		} else {
-			this.classList.remove('active');
-			qrSettings.classList.add('hidden');
-			mtfSettings.classList.add('hidden');
-			qrSettingsClass = true;
-			mtfClass = true;
-		}
-	};*/
 
 	setTab();
 
-	/*UTILS.addEvent(settingsBtn, 'click', toggleSettings);*/
-	/*UTILS.addEvent(mtfSettingsBtn, 'click', toggleSettings);*/
+	UTILS.addEvent(settingsBtn, 'click', toggleSettings);
+	UTILS.addEvent(cnclBtn, 'click', cancelBtn);
+	UTILS.addEvent(expnd, 'click', expand);
 	UTILS.addEvent(tabContainer, 'click', changeHash);
 	/*UTILS.addEvent(tabContainer, 'keypress', keypressOpenTab);*/
 	UTILS.addEvent(window, 'hashchange', setTab);

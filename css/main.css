@@ -312,6 +312,8 @@ header {
     height: 950px;
     margin-top: -20px;
     display: none;
+    position: relative;
+    z-index: 1;
 }
 
 .active {
@@ -424,6 +426,9 @@ header {
 
 .activeRep {
     display: block;
+}
+.invalid {
+    border: 1px solid red!important;
 }
 
 

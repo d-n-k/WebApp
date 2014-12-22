@@ -143,16 +143,16 @@ window.onload = (function() {
 				// }
 				else {
 	  				UTILS.addClass(inputName[i],'invalid');
-	  				UTILS.removeClass(settingsBtn,'activeSet');
-					UTILS.removeClass(repContent,'activeRep');
-	  			}
 
+	  			}
+	  			UTILS.removeClass(settingsBtn,'activeSet');
+				UTILS.removeClass(repContent,'activeRep');
             }
 
         }
 
-        UTILS.removeClass(settingsBtn,'activeSet');
-		UTILS.removeClass(repContent,'activeRep');
+        /*UTILS.removeClass(settingsBtn,'activeSet');
+		UTILS.removeClass(repContent,'activeRep');*/
 	};
 
 	var addToSelect = function (selectElm, text, value) {

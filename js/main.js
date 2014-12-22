@@ -1,22 +1,27 @@
 /*globals UTILS*/
 window.onload = (function() {
+	'use strict';
 	UTILS.ajax('data/notification.txt', {
 		method: 'GET',
 		done: function(response) {
-			document.getElementById("notification").innerHTML = response;
+			document.getElementById('notification').innerHTML = response;
 		},
 		fail: function (err) {
-			document.getElementById("notification").style.display = "none";
+			document.getElementById('notification').style.display = 'none';
 		}
 	});
 	var tabContainer = UTILS.qs('.tab-hdrs'),
 		expnd = UTILS.qs('.expand'),
 		repContent = UTILS.qs('.content-reports'),
 		allTabs = UTILS.qsa('a[role="tab"]'),
-		tabBody = UTILS.qsa('div[role="tabpanel"]'),
 		settingsBtn = UTILS.qs('.settings'),
 		cnclBtn = UTILS.qs('.cancel_btn'),
 		submitBtn = UTILS.qs('.submit_btn'),
+		inputName = UTILS.qsa('input[type=text]'),
+		inputURL = UTILS.qsa('input[type=url]'),
+		selectElm = UTILS.qs('#choose-report-select'),
+		local, storageReports = [],
+		storage = JSON.parse(localStorage.getItem('storageReports')) || {},
 		inpFocus = UTILS.qs('.site-name');
 
 
@@ -103,38 +108,104 @@ window.onload = (function() {
 
 	var validation = function(e) {
 		e.preventDefault();
-		var inputName = $('input[type=text]'),
-		    inputURL = $('input[type=url]');
+
+	/* jshint -W101 */
+	    var re = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/i;
+	/* jshint +W101 */
+
 		for (var i = 0; i < inputName.length; i++) {
-            if (inputName[i].value !== "" && inputURL[i].value === "") {
+
+            if (inputName[i].value !== '' && inputURL[i].value === '') {
                 UTILS.addClass(inputURL[i],'invalid');
                 inputURL[i].focus();
-                // arrInvalidFieldset.push(inputTypeUrl[i]);
-                continue;
             }
-            else if (inputName[i].value === "" && inputURL[i].value !== "") {
+            else if (inputName[i].value === '' && inputURL[i].value !== '') {
                 UTILS.addClass(inputName[i],'invalid');
                 inputName[i].focus();
+            }
+            else if(inputName[i].value !== '' && inputURL[i].value !== '') {
+            	UTILS.removeClass(inputName[i] ,'invalid');
+            	UTILS.removeClass(inputURL[i] ,'invalid');
+            	if (inputURL[i].value.substring(0, 4) !== 'http') { // http protocol
+				 		inputURL[i].value = 'http://' + inputURL[i].value;
+			    }
+			    if (re.test(inputURL[i].value)){ // url validation
+	    			UTILS.removeClass(inputURL[i] ,'invalid');
+	    			addToSelect(selectElm,inputName[i].value,inputURL[i].value);
+					addToStorage(inputName[i] , inputURL[i]);
+					changeIFrame(selectElm);
+					selectElm.style.display = 'block';
+				}
+				// for (var j = 0; j < storage.length; i++) {
+				// 	if (storage[j].name = inputName[i].value) {
+				// 		removeFromSelect();
+				// 	}
+				// }
+				else {
+	  				UTILS.addClass(inputName[i],'invalid');
+	  				UTILS.removeClass(settingsBtn,'activeSet');
+					UTILS.removeClass(repContent,'activeRep');
+	  			}
 
-                // arrInvalidFieldset.push(inputTypeText[i]);
-                continue;
             }
-            // else if(inputTypeText[i].value !== "" && inputTypeUrl[i].value !== ""){
-            //     addOptionToSelect(bookmarks , inputTypeText[i].value , inputTypeUrl[i].value);
-            // }
-            // else{
-            //     emptyfieldsetCounter++;
-            // }
-            if (UTILS.hasClass(inputName[i] ,'invalid')) {
-                UTILS.removeClass(inputName[i] ,'invalid');
-            }
-            if (UTILS.hasClass(inputURL[i] ,'invalid')) {
-                UTILS.removeClass(inputURL[i] ,'invalid');
-            }
+
         }
+
+        UTILS.removeClass(settingsBtn,'activeSet');
+		UTILS.removeClass(repContent,'activeRep');
 	};
 
-/*
+	var addToSelect = function (selectElm, text, value) {
+		if (!text || !value) {
+			return false;
+		}
+		var option = document.createElement('option');
+
+		option.text = text;
+		option.value = value;
+		selectElm.add(option);
+	};
+	var removeFromSelect = function () {
+		selectElm.removeChild(selectElm.firstChild);
+	};
+
+	//check if local storage is supported
+	var localStorageSupported = function () {
+		if (!Modernizr.localstorage) {
+			console.error('Your browser does not support localStorage');
+			return false;
+		}
+		return true;
+	};
+	var addToStorage = function (name, url) {
+		if (localStorageSupported()) {
+			local = {
+	    	name: name.value,
+	    	url: url.value
+	    	};
+	    	storageReports.unshift(local);
+			localStorage.setItem('storageReports', JSON.stringify(storageReports));
+		}
+	};
+
+	var changeIFrame = function (select) {
+
+		var selectedOptionValue = select.options[select.selectedIndex].value,
+		    getContFrame = UTILS.qs('#tab1');
+		getContFrame.src = selectedOptionValue;
+	};
+
+	var storageToSelect = function() {
+
+		var option = document.createElement('option');
+		for (var i = 0; i < storage.length; i++) {
+			option.text = storage[i].name;
+			option.value = storage[i].url;
+			selectElm.add(option);
+		}
+	};
+
+
 	var keypressOpenTab = function(e){
 		e.preventDefault();
 		var focused = e.target,
@@ -144,7 +215,25 @@ window.onload = (function() {
 			location.hash = 'panel-' + tabAttr.replace('#', '');
 		}
 	};
-
+	var keypressDelete = function(e){
+		// e.preventDefault();
+		if (e.keyCode === 46) {
+			removeFromSelect();
+		}
+	};
+	var init = function () {
+		if (localStorage.getItem('storageReports')) {
+			UTILS.removeClass(settingsBtn,'activeSet');
+			UTILS.removeClass(repContent,'activeRep');
+			changeIFrame(selectElm);
+		}
+		else {
+			UTILS.addClass(settingsBtn,'activeSet');
+			UTILS.addClass(repContent,'activeRep');
+			selectElm.style.display = 'none';
+		}
+	};
+/*
 	var escToClose = function(e){
 		var target = e.target;
 		if(e.keyCode === 27){
@@ -157,14 +246,19 @@ window.onload = (function() {
 
 
 	setTab();
-
+	storageToSelect();
+	init();
 	UTILS.addEvent(settingsBtn, 'click', toggleSettings);
 	UTILS.addEvent(cnclBtn, 'click', cancelBtn);
 	UTILS.addEvent(expnd, 'click', expand);
 	UTILS.addEvent(tabContainer, 'click', changeHash);
-	UTILS.addEvent(submitBtn,'submit',validation);
-	/*UTILS.addEvent(tabContainer, 'keypress', keypressOpenTab);*/
+	UTILS.addEvent(submitBtn,'click',validation);
+	UTILS.addEvent(tabContainer, 'keypress', keypressOpenTab);
 	UTILS.addEvent(window, 'hashchange', setTab);
+	UTILS.addEvent(selectElm, 'change', function () {
+		changeIFrame(this);
+	});
+
 
 
 })();

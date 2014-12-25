@@ -108,22 +108,22 @@
                         </li>
                     </ul>
 
-                    <div id="quick-reports" class="tab-content" role="tabpanel">
+                    <div id="quick-reports" class="tab-content active" role="tabpanel">
                         <div class="tab-content-header clearfix">
-                            <select class="choose-report" name="choose-report" id="choose-report-select"></select>
+                            <select class="choose-report quick-reports" name="choose-report" id="choose-report-selectQ"></select>
                             <a class="action-btn expand" href="">expand</a>
-                            <a class="action-btn settings" href="">settings</a>
+                            <a class="action-btn settingsQ" href="">settings</a>
                         </div>
 
 
 
-                        <div class="content-reports">
+                        <div class="content-reportsQ activeRep">
                             <form class="reports" id="form">
                                 <fieldset class="report-row">
                                     <span>Report 01</span>
                                     <label for="name1">Name:</label>
                                     <input type="text" name="site-name1" id="name1"
-                                    class="site-name" placeholder ="Site name" required="required" >
+                                    class="site-nameQ" placeholder ="Site name" required="required" >
                                     <label for="url1" class="site-url">URL:</label>
                                     <input type="url" name="url1" id="url1" placeholder ="Site URL"
                                     required="required" >
@@ -148,7 +148,7 @@
                                 </fieldset>
 
                                 <span class='system-message'></span>
-                                <button type="submit" class="submit_btn">Save</button>
+                                <button type="submit" class="submit_btnQ">Save</button>
                                 <button type="button" class="cancel_btn">Cancel</button>
                             </form>
                         </div>
@@ -162,16 +162,17 @@
 
                     <div id="my-team-folders" class="tab-content" role="tabpanel">
                         <div class="tab-content-header clearfix">
+                            <select class="choose-report my-team-folders" name="choose-report" id="choose-report-selectM"></select>
                             <a class="action-btn expand" href="">expand</a>
-                            <a class="action-btn settings" href="">settings</a>
+                            <a class="action-btn settingsM" href="">settings</a>
                         </div>
-                        <div class="content-reports">
+                        <div class="content-reportsM activeRep">
                             <form class="reports" id="form">
                                 <fieldset class="report-row">
                                     <span>Report 01</span>
                                     <label for="name1">Name:</label>
                                     <input type="text" name="site-name1" id="name1"
-                                    class="site-name" required="required" >
+                                    class="site-nameM" required="required" >
                                     <label for="url1" class="site-url">URL:</label>
                                     <input type="url" name="url1" id="url1"
                                     required="required" >
@@ -196,7 +197,7 @@
                                 </fieldset>
 
                                 <span class='system-message'></span>
-                                <button type="submit" class="submit_btn">Save</button>
+                                <button type="submit" class="submit_btnM">Save</button>
                                 <button type="button" class="cancel_btn">Cancel</button>
                             </form>
                         </div>

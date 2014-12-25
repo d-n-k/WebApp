@@ -350,9 +350,12 @@ header {
     background-position: 50% 50%;
 }
 
-.action-btn.settings:focus,
-.action-btn.settings:active,
-.action-btn.settings:hover,
+.action-btn.settingsQ:focus,
+.action-btn.settingsQ:active,
+.action-btn.settingsQ:hover,
+.action-btn.settingsM:focus,
+.action-btn.settingsM:active,
+.action-btn.settingsM:hover,
 .action-btn.expand:hover {
     background-color: white;
 }
@@ -361,7 +364,8 @@ header {
     right: 59px;
 }
 
-.action-btn.settings {
+.action-btn.settingsQ,
+.action-btn.settingsM {
     background-image: url(../img/settings.png);
     right: 2%;
     /* background-color: white; */
@@ -370,11 +374,12 @@ header {
 /* ==========================================================================
    Reports Form
    ========================================================================== */
-.content-reports {
+.content-reportsQ,
+.content-reportsM {
     width: 96%;
     height: 210px;
     background-color: white;
-    margin: 6% 2% 0 2%;
+    margin: 19px 2% 0 2%;
     position: relative;
     z-index: 2;
     display: none;
@@ -398,7 +403,8 @@ header {
     width: 25%;
 }
 
-.submit_btn {
+.submit_btnQ,
+.submit_btnM {
     height: 30px;
     float: right;
     margin: 1% 2% 1% 5%;

@@ -12,18 +12,56 @@ window.onload = (function() {
 	});
 	var tabContainer = UTILS.qs('.tab-hdrs'),
 		expnd = UTILS.qs('.expand'),
-		repContent = UTILS.qs('.content-reports'),
 		allTabs = UTILS.qsa('a[role="tab"]'),
-		settingsBtn = UTILS.qs('.settings'),
 		cnclBtn = UTILS.qs('.cancel_btn'),
-		submitBtn = UTILS.qs('.submit_btn'),
+		submitBtnQ = UTILS.qs('.submit_btnQ'),
+		submitBtnM = UTILS.qs('.submit_btnM'),
 		inputName = UTILS.qsa('input[type=text]'),
 		inputURL = UTILS.qsa('input[type=url]'),
-		selectElm = UTILS.qs('#choose-report-select'),
+		quickR = UTILS.qs('#quick-reports'),
 		local, storageReports = [],
-		storage = JSON.parse(localStorage.getItem('storageReports')) || {},
-		inpFocus = UTILS.qs('.site-name');
+		setBtnQ = UTILS.qs('.settingsQ'),
+		setBtnM = UTILS.qs('.settingsM'),
+		storage = JSON.parse(localStorage.getItem('storageReports')) || {};
 
+
+	/*var selectElm = (quickR.getAttribute('class').indexOf('active')> -1) ? 	+
+	UTILS.qs('#choose-report-selectQ') : UTILS.qs('#choose-report-selectM');
+	var settingsBtn = (quickR.getAttribute('class').indexOf('active')> -1) ? 	+
+	UTILS.qs('.settingsQ') : UTILS.qs('.settingsM');*/
+
+	var selectElm = function () {
+		if(quickR.getAttribute('class').indexOf('active')> -1) {
+			return UTILS.qs('#choose-report-selectQ');
+		}
+		else {
+			return UTILS.qs('#choose-report-selectM');
+		}
+	};
+	var settingsBtn = function () {
+		if(quickR.getAttribute('class').indexOf('active')> -1) {
+			return UTILS.qs('.settingsQ');
+		}
+		else {
+			return UTILS.qs('.settingsM');
+		}
+	};
+	var repContent = function () {
+		if(quickR.getAttribute('class').indexOf('active')> -1) {
+			return UTILS.qs('.content-reportsQ');
+		}
+		else {
+			return UTILS.qs('.content-reportsM');
+		}
+	};
+	var inpFocus = function () {
+		if(quickR.getAttribute('class').indexOf('active')> -1) {
+			return UTILS.qs('.site-nameQ');
+		}
+		else {
+			return UTILS.qs('.site-nameM');
+		}
+	};
 
 	var getElmAttribute = function(elm) {
 	    return elm.getAttribute('href').split('#')[1];
@@ -65,6 +103,10 @@ window.onload = (function() {
 				currentElm.removeAttribute('aria-hidden', 'true');
 			}
 		}
+		settingsBtn();
+		repContent();
+		inpFocus();
+		selectElm();
 	};
 
 	var changeHash = function(e){
@@ -73,28 +115,30 @@ window.onload = (function() {
 			tabAttr = getElmAttribute(clicked);
 
 		location.hash = 'panel-' + tabAttr.replace('#', '');
+
 	};
 
 	var toggleSettings = function(e) {
 		e.preventDefault();
+
 		var target = e.target,
 			targetAtt = target.getAttribute('class');
 
 		UTILS.addClass(target,'activeSet');
-		UTILS.addClass(repContent,'activeRep');
-		inpFocus.focus();
+		UTILS.addClass(repContent(),'activeRep');
+		inpFocus().focus();
 
 
 		if (targetAtt.indexOf('activeSet') > -1) {
 			UTILS.removeClass(target,'activeSet');
-		    UTILS.removeClass(repContent,'activeRep');
+		    UTILS.removeClass(repContent(),'activeRep');
 		}
 	};
 
 	var cancelBtn = function(e) {
 		e.preventDefault();
-		UTILS.removeClass(settingsBtn,'activeSet');
-		UTILS.removeClass(repContent,'activeRep');
+		UTILS.removeClass(settingsBtn(),'activeSet');
+		UTILS.removeClass(repContent(),'activeRep');
 
 	};
 
@@ -126,27 +170,24 @@ window.onload = (function() {
             else if(inputName[i].value !== '' && inputURL[i].value !== '') {
             	UTILS.removeClass(inputName[i] ,'invalid');
             	UTILS.removeClass(inputURL[i] ,'invalid');
+            	UTILS.addEvent(inputName[i],'keydown',keypressDelete);
             	if (inputURL[i].value.substring(0, 4) !== 'http') { // http protocol
 				 		inputURL[i].value = 'http://' + inputURL[i].value;
 			    }
 			    if (re.test(inputURL[i].value)){ // url validation
 	    			UTILS.removeClass(inputURL[i] ,'invalid');
-	    			addToSelect(selectElm,inputName[i].value,inputURL[i].value);
+	    			addToSelect(selectElm(),inputName[i].value,inputURL[i].value);
 					addToStorage(inputName[i] , inputURL[i]);
-					changeIFrame(selectElm);
-					selectElm.style.display = 'block';
+					changeIFrame(selectElm());
+					selectElm().style.display = 'block';
 				}
-				// for (var j = 0; j < storage.length; i++) {
-				// 	if (storage[j].name = inputName[i].value) {
-				// 		removeFromSelect();
-				// 	}
-				// }
+
 				else {
 	  				UTILS.addClass(inputName[i],'invalid');
 
 	  			}
 	  			UTILS.removeClass(settingsBtn,'activeSet');
-				UTILS.removeClass(repContent,'activeRep');
+				UTILS.removeClass(repContent(),'activeRep');
             }
 
         }
@@ -201,7 +242,7 @@ window.onload = (function() {
 		for (var i = 0; i < storage.length; i++) {
 			option.text = storage[i].name;
 			option.value = storage[i].url;
-			selectElm.add(option);
+			selectElm().add(option);
 		}
 	};
 
@@ -217,20 +258,20 @@ window.onload = (function() {
 	};
 	var keypressDelete = function(e){
 		// e.preventDefault();
-		if (e.keyCode === 46) {
+		if (e.keyCode === 46 || e.keyCode === 8) {
 			removeFromSelect();
 		}
 	};
 	var init = function () {
 		if (localStorage.getItem('storageReports')) {
-			UTILS.removeClass(settingsBtn,'activeSet');
-			UTILS.removeClass(repContent,'activeRep');
-			changeIFrame(selectElm);
+			UTILS.removeClass(settingsBtn(),'activeSet');
+			UTILS.removeClass(repContent(),'activeRep');
+			changeIFrame(selectElm());
 		}
 		else {
-			UTILS.addClass(settingsBtn,'activeSet');
-			UTILS.addClass(repContent,'activeRep');
-			selectElm.style.display = 'none';
+			UTILS.addClass(settingsBtn(),'activeSet');
+			UTILS.addClass(repContent(),'activeRep');
+			selectElm().style.display = 'none';
 		}
 	};
 /*
@@ -248,14 +289,19 @@ window.onload = (function() {
 	setTab();
 	storageToSelect();
 	init();
-	UTILS.addEvent(settingsBtn, 'click', toggleSettings);
+
+	// UTILS.addEvent(settingsBtn(), 'click', toggleSettings);
+	UTILS.addEvent(setBtnQ, 'click', toggleSettings);
+	UTILS.addEvent(setBtnM, 'click', toggleSettings);
 	UTILS.addEvent(cnclBtn, 'click', cancelBtn);
 	UTILS.addEvent(expnd, 'click', expand);
 	UTILS.addEvent(tabContainer, 'click', changeHash);
-	UTILS.addEvent(submitBtn,'click',validation);
+	// UTILS.addEvent(submitBtn,'click', validation);
+	UTILS.addEvent(submitBtnQ,'click', validation);
+	UTILS.addEvent(submitBtnM,'click', validation);
 	UTILS.addEvent(tabContainer, 'keypress', keypressOpenTab);
 	UTILS.addEvent(window, 'hashchange', setTab);
-	UTILS.addEvent(selectElm, 'change', function () {
+	UTILS.addEvent(selectElm(), 'change', function () {
 		changeIFrame(this);
 	});
 

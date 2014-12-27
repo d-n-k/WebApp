@@ -113,6 +113,7 @@ header {
 .layout-wrap {
     max-width: 1024px;
     margin: 0 auto;
+    z-index: 0;
 
 
 }
@@ -132,11 +133,11 @@ header {
    ========================================================================== */
 
 .bground {
-    background: url(../img/body-background.jpg) repeat center center fixed;
+    background: url(../../img/body-background.jpg) no-repeat center center fixed;
     -webkit-background-size: cover; /* For WebKit*/
     -moz-background-size: cover;    /* Mozilla*/
     -o-background-size: cover;      /* Opera*/
-    background-size: 150%;         /* Generic*/
+    background-size: cover;         /* Generic*/
     margin: 0 auto;
     height: 100%;
     /*width: 100%; */
@@ -156,9 +157,12 @@ header {
     height: 124px;
     margin-top: 20px;
     position: relative;
+    z-index: 100;
+    font-size: 1em;
 }
 .nav-section:hover .action-list {
     display: block;
+
 }
 .nav-section:hover .arrow {
     transform: rotateZ(180deg);
@@ -178,29 +182,29 @@ header {
     width: 100%;
 }
 .sec1 {
-    background: url(../img/action-report-new.png) no-repeat center 50px;
+    background: url(../../img/action-report-new.png) no-repeat center 50px;
     background-color: black;
 
 }
 .sec2 {
-    background: url(../img/action-report-top.png) no-repeat center 50px;
+    background: url(../../img/action-report-top.png) no-repeat center 50px;
     background-color: black;
     margin: 0 1% 0 1%;
 
 }
 
 .sec3 {
-    background: url(../img/actions-help.png) no-repeat center 50px;
+    background: url(../../img/actions-help.png) no-repeat center 50px;
     background-color: black;
 
 }
 #notification {
     background: #ebebeb;
     width: 99.1%;
-    height: 36px;
+    /*height: 36px;*/
     padding: 0 1.5%;
     margin: 15px 1% 0 0;
-    line-height: 2em;
+    line-height: 3em;
     font-size: .8rem;
     display: block;
 }
@@ -229,11 +233,11 @@ header {
     color: #a5a5a5;
     display: block;
     font-family: open-sans;
-    font-size: 0.725em;
+    font-size: 0.9em;
 }
 
 .arrow {
-    background: url(../img/arrow.png) center no-repeat;
+    background: url(../../img/arrow.png) center no-repeat;
     position: absolute;
     height: 12px;
     width: 16px;
@@ -255,6 +259,7 @@ header {
     margin-left: 10px;
     margin-right: 10px;
     border-bottom: 1px solid lightgrey;
+    font-size: 0.8em;
 }
 .action-list li {
     background-color: #EBEBEB;
@@ -310,7 +315,7 @@ header {
     width: 100%;
     background: #ebebeb;
     height: 950px;
-    margin-top: -20px;
+    margin-top: -21px;
     display: none;
     position: relative;
     z-index: 1;
@@ -328,16 +333,18 @@ header {
     width: 100%;
     padding-top: 20px;
     position: relative;
+    margin-bottom: 2px;
 }
 .choose-report {
     width: 280px;
-    position: relative;
+    position: absolute;
     height: 32px;
     background: #fff;
     overflow: hidden;
     font-size: .8rem;
     border: 1px solid #fff;
     margin-left: 2%;
+
 }
 .action-btn {
     position: absolute;
@@ -360,13 +367,13 @@ header {
     background-color: white;
 }
 .action-btn.expand {
-    background-image: url(../img/expand.png);
+    background-image: url(../../img/expand.png);
     right: 59px;
 }
 
 .action-btn.settingsQ,
 .action-btn.settingsM {
-    background-image: url(../img/settings.png);
+    background-image: url(../../img/settings.png);
     right: 2%;
     /* background-color: white; */
 
@@ -377,12 +384,13 @@ header {
 .content-reportsQ,
 .content-reportsM {
     width: 96%;
-    height: 210px;
+    height: 220px;
     background-color: white;
-    margin: 19px 2% 0 2%;
-    position: relative;
-    z-index: 2;
+    margin: 50px 2% 0 2%;
+    position: absolute;
+    z-index: 10;
     display: none;
+    /* border: 1px solid #646464; */
 }
 .reports {
     height: 210px;
@@ -413,7 +421,8 @@ header {
     width: 100px;
     border: none;
 }
-.cancel_btn {
+.cancel_btnQ,
+.cancel_btnM {
     height: 30px;
     float: right;
     margin: 1% -4% 1% 5%;
@@ -443,9 +452,10 @@ header {
    Iframe
    ========================================================================== */
 iframe {
-    width: 100%;
+    width: 96%;
     height: 800px;
-    margin-top: 20px;
+    margin: 50px 2% 0 2%;
+
 }
 #tab2 {
     width: 100%;

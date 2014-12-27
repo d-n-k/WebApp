@@ -224,7 +224,9 @@ window.onload = (function() {
 
 	//check if local storage is supported
 	var localStorageSupported = function () {
+		/* jshint -W101 */
 		if (!Modernizr.localstorage) {
+		/* jshint +W101 */
 			console.error('Your browser does not support localStorage');
 			return false;
 		}

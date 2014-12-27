@@ -64,6 +64,7 @@
     "predef": [
         "$",
         "jQuery",
+        "Modernizr",
         "console"
     ],
     "maxerr": 100

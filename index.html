@@ -12,9 +12,7 @@
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="public/css/main.min.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -149,10 +147,10 @@
 
                                 <span class='system-message'></span>
                                 <button type="submit" class="submit_btnQ">Save</button>
-                                <button type="button" class="cancel_btn">Cancel</button>
+                                <button type="button" class="cancel_btnQ">Cancel</button>
                             </form>
                         </div>
-                        <iframe id="tab1" src="" frameborder="0"></iframe>
+                        <iframe id="tabQ" src="" frameborder="0"></iframe>
                     </div>
 
                     <div id="fmy-folders" class="tab-content" role="tabpanel">
@@ -172,35 +170,36 @@
                                     <span>Report 01</span>
                                     <label for="name1">Name:</label>
                                     <input type="text" name="site-name1" id="name1"
-                                    class="site-nameM" required="required" >
+                                    class="site-nameM" placeholder ="Site name" required="required" >
                                     <label for="url1" class="site-url">URL:</label>
                                     <input type="url" name="url1" id="url1"
-                                    required="required" >
+                                    placeholder ="Site URL" required="required" >
                                 </fieldset>
 
                                 <fieldset class="report-row">
                                     <span>Report 02</span>
                                     <label for="name2">Name:</label>
                                     <input type="text" name="site-name2" id="name2"
-                                    class="site-name">
+                                    placeholder ="Site name" class="site-name">
                                     <label for="url2" class="site-url">URL:</label>
-                                    <input type="url" name="url2" id="url2">
+                                    <input type="url" name="url2" placeholder ="Site URL" id="url2">
                                 </fieldset>
 
                                 <fieldset class="report-row">
                                     <span>Report 03</span>
                                     <label for="name3">Name:</label>
                                     <input type="text" name="site-name3" id="name3"
-                                    class="site-name">
+                                    placeholder ="Site name" class="site-name">
                                     <label for="url3" class="site-url">URL:</label>
-                                    <input type="url" name="url3" id="url3">
+                                    <input type="url" name="url3" placeholder ="Site URL" id="url3">
                                 </fieldset>
 
                                 <span class='system-message'></span>
                                 <button type="submit" class="submit_btnM">Save</button>
-                                <button type="button" class="cancel_btn">Cancel</button>
+                                <button type="button" class="cancel_btnM">Cancel</button>
                             </form>
                         </div>
+                        <iframe id="tabM" src="" frameborder="0"></iframe>
                     </div>
 
                     <div id="public-folders" class="tab-content" role="tabpanel">
@@ -211,8 +210,8 @@
             </div>
         </div>
         <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+        <script src="public/js/main.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="vendor/jquery-1.10.2.min.js"><\/script>')</script>
     </body>
 </html>

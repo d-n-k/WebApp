@@ -41,6 +41,7 @@ window.onload = (function() {
 			return UTILS.qs('#choose-report-selectM');
 		}
 	};
+
 	var getContFrame = function () {
 		if(quickR.getAttribute('class').indexOf('active')> -1) {
 			return UTILS.qs('#tabQ');
@@ -156,7 +157,7 @@ window.onload = (function() {
 
 	var expand = function(e) {
 		e.preventDefault();
-		var curentIframe = UTILS.qs('#tab1'),
+		var curentIframe = getContFrame(),
 			currentURL = curentIframe.src;
 		window.open(currentURL, '_blank');
 		window.focus();
@@ -169,40 +170,37 @@ window.onload = (function() {
 	    var re = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/i;
 	/* jshint +W101 */
 
-		for (var i = 0; i < inputName.length; i++) {
+			for (var i = 0; i < inputName.length; i++) {
 
-            if (inputName[i].value !== '' && inputURL[i].value === '') {
-                UTILS.addClass(inputURL[i],'invalid');
-                inputURL[i].focus();
-            }
-            else if (inputName[i].value === '' && inputURL[i].value !== '') {
-                UTILS.addClass(inputName[i],'invalid');
-                inputName[i].focus();
-            }
-            else if(inputName[i].value !== '' && inputURL[i].value !== '') {
-            	UTILS.removeClass(inputName[i] ,'invalid');
-            	UTILS.removeClass(inputURL[i] ,'invalid');
-            	UTILS.addEvent(inputName[i],'keydown',keypressDelete);
-            	if (inputURL[i].value.substring(0, 4) !== 'http') { // http protocol
-				 		inputURL[i].value = 'http://' + inputURL[i].value;
-			    }
-			    if (re.test(inputURL[i].value)){ // url validation
-	    			UTILS.removeClass(inputURL[i] ,'invalid');
-	    			addToSelect(selectElm(), inputName[i].value, inputURL[i].value);
-					addToStorage(inputName[i] , inputURL[i]);
-					changeIFrame(selectElm());
-					selectElm().style.display = 'block';
-				}
-
-				else {
-	  				UTILS.addClass(inputName[i],'invalid');
-
-	  			}
-	  			UTILS.removeClass(settingsBtn(),'activeSet');
-				UTILS.removeClass(repContent(),'activeRep');
-            }
-
-        }
+	            if (inputName[i].value !== '' && inputURL[i].value === '') {
+	                UTILS.addClass(inputURL[i],'invalid');
+	                inputURL[i].focus();
+	            }
+	            else if (inputName[i].value === '' && inputURL[i].value !== '') {
+	                UTILS.addClass(inputName[i],'invalid');
+	                inputName[i].focus();
+	            }
+	            else if(inputName[i].value !== '' && inputURL[i].value !== '') {
+	            	UTILS.removeClass(inputName[i] ,'invalid');
+	            	UTILS.removeClass(inputURL[i] ,'invalid');
+	            	UTILS.addEvent(inputName[i],'keydown',keypressDelete);
+	            	if (inputURL[i].value.substring(0, 4) !== 'http') { // http protocol
+					 	inputURL[i].value = 'http://' + inputURL[i].value;
+				    }
+				    if (re.test(inputURL[i].value)){ // url validation
+		    			UTILS.removeClass(inputURL[i] ,'invalid');
+		    			addToSelect(selectElm(), inputName[i].value, inputURL[i].value);
+						addToStorage(inputName[i] , inputURL[i]);
+						changeIFrame(selectElm());
+						selectElm().style.display = 'block';
+					}
+					else {
+		  				UTILS.addClass(inputName[i],'invalid');
+		  			}
+		  			UTILS.removeClass(settingsBtn(),'activeSet');
+					UTILS.removeClass(repContent(),'activeRep');
+	            }
+	        }
 
         /*UTILS.removeClass(settingsBtn,'activeSet');
 		UTILS.removeClass(repContent,'activeRep');*/
@@ -212,11 +210,20 @@ window.onload = (function() {
 		if (!text || !value) {
 			return false;
 		}
-		var option = document.createElement('option');
+		if(quickR.getAttribute('class').indexOf('active')> -1) {
+			var option = document.createElement('option');
 
-		option.text = text;
-		option.value = value;
-		selectElm.add(option);
+			option.text = text;
+			option.value = value;
+			selQ.add(option);
+		}
+		else {
+			var option = document.createElement('option');
+
+			option.text = text;
+			option.value = value;
+			selM.add(option);
+		}
 	};
 	var removeFromSelect = function () {
 		selectElm().removeChild(selectElm().firstChild);
@@ -224,9 +231,7 @@ window.onload = (function() {
 
 	//check if local storage is supported
 	var localStorageSupported = function () {
-		/* jshint -W101 */
 		if (!Modernizr.localstorage) {
-		/* jshint +W101 */
 			console.error('Your browser does not support localStorage');
 			return false;
 		}
@@ -235,6 +240,7 @@ window.onload = (function() {
 	var addToStorage = function (name, url) {
 		if (localStorageSupported()) {
 			local = {
+			tab: getContFrame().offsetParent.id,
 	    	name: name.value,
 	    	url: url.value
 	    	};
@@ -244,22 +250,37 @@ window.onload = (function() {
 	};
 
 	var changeIFrame = function (select) {
-
-		if (select !== null) {
-			var selectedOptionValue = select.options[select.selectedIndex].value;
-			getContFrame().src = selectedOptionValue;
-		}
+			if (quickR.getAttribute('class').indexOf('active')> -1) {
+				if (select !== null || undefined) {
+					var selectedOptionValue = select.options[select.selectedIndex].value;
+					UTILS.qs('#tabQ').src = selectedOptionValue;
+				}
+			}
+			else {
+				if (select !== null || undefined) {
+					var selectedOptionValue = select.options[select.selectedIndex].value;
+					UTILS.qs('#tabM').src = selectedOptionValue;
+				}
+			}
 	};
-				// UTILS.qs('#tabQ').src = select.options[select.selectedIndex].value;
-				// UTILS.qs('#tabM').src = selectedOptionValue;
 
 	var storageToSelect = function() {
 
 		var option = document.createElement('option');
 		for (var i = 0; i < storage.length; i++) {
-			option.text = storage[i].name;
-			option.value = storage[i].url;
-			selectElm().add(option);
+			if (storage[i].tab ==='quick-reports') {
+				option.text = storage[i].name;
+				option.value = storage[i].url;
+				selectElm().add(option);
+			}
+			if (storage[i].tab ==='my-team-folders') {
+				option.text = storage[i].name;
+				option.value = storage[i].url;
+				selectElm().add(option);
+			}
+			else {
+				return false;
+			}
 		}
 	};
 
@@ -283,20 +304,19 @@ window.onload = (function() {
 		if (localStorage.getItem('storageReports')) {
 			UTILS.removeClass(settingsBtn(),'activeSet');
 			UTILS.removeClass(repContent(),'activeRep');
-			if (selQ !== null) {
+			if (selQ.innerHTML !== '') {
 				UTILS.qs('#tabQ').src = selQ.options[selQ.selectedIndex].value;
 			}
-			if (selM !== null) {
+			if (selM.innerHTML !== '') {
 				UTILS.qs('#tabM').src = selM.options[selM.selectedIndex].value;
 			}
-			// changeIFrame(UTILS.qs('selQ'));
-			// changeIFrame(UTILS.qs('selQ'));
-			// changeIFrame(UTILS.qs('selM'));
+
 		}
 		else {
 			UTILS.addClass(settingsBtn(),'activeSet');
 			UTILS.addClass(repContent(),'activeRep');
-			selectElm().style.display = 'none';
+			selM.style.display = 'none';
+			selQ.style.display = 'none';
 		}
 	};
 /*
@@ -313,6 +333,7 @@ window.onload = (function() {
 
 	setTab();
 	storageToSelect();
+	getContFrame();
 	init();
 
 	// UTILS.addEvent(settingsBtn(), 'click', toggleSettings);

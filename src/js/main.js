@@ -11,7 +11,10 @@ window.onload = (function() {
 		}
 	});
 	var tabContainer = UTILS.qs('.tab-hdrs'),
-		expnd = UTILS.qs('.expand'),
+		expnd = UTILS.qs('.expand1'),
+		expnd1 = UTILS.qs('.expand2'),
+		expnd2 = UTILS.qs('.expand3'),
+		expnd3 = UTILS.qs('.expand4'),
 		allTabs = UTILS.qsa('a[role="tab"]'),
 		cnclBtnQ = UTILS.qs('.cancel_btnQ'),
 		cnclBtnM = UTILS.qs('.cancel_btnM'),
@@ -20,6 +23,8 @@ window.onload = (function() {
 		inputName = UTILS.qsa('input[type=text]'),
 		inputURL = UTILS.qsa('input[type=url]'),
 		quickR = UTILS.qs('#quick-reports'),
+		fmyFolders = UTILS.qs('#fmy-folders'),
+		myteamReports = UTILS.qs('#my-team-folders'),
 		local, storageReports = [],
 		selQ = UTILS.qs('#choose-report-selectQ'),
 		selM = UTILS.qs('#choose-report-selectM'),
@@ -46,8 +51,14 @@ window.onload = (function() {
 		if(quickR.getAttribute('class').indexOf('active')> -1) {
 			return UTILS.qs('#tabQ');
 		}
-		else {
+		if(myteamReports.getAttribute('class').indexOf('active')> -1) {
 			return UTILS.qs('#tabM');
+		}
+		if(fmyFolders.getAttribute('class').indexOf('active')> -1) {
+			return UTILS.qs('#tab2');
+		}
+		else {
+			return UTILS.qs('#tab4');
 		}
 	};
 	var settingsBtn = function () {
@@ -189,9 +200,17 @@ window.onload = (function() {
 				    }
 				    if (re.test(inputURL[i].value)){ // url validation
 		    			UTILS.removeClass(inputURL[i] ,'invalid');
-		    			addToSelect(selectElm(), inputName[i].value, inputURL[i].value);
-						addToStorage(inputName[i] , inputURL[i]);
-						changeIFrame(selectElm());
+						if((quickR.getAttribute('class').indexOf('active') === -1) && i>2) {
+							addToSelect(selectElm(), inputName[i].value, inputURL[i].value);
+							addToStorage(inputName[i] , inputURL[i]);
+							changeIFrame(selectElm());
+						}
+						if((quickR.getAttribute('class').indexOf('active') > -1) && i<2) {
+							addToSelect(selectElm(), inputName[i].value, inputURL[i].value);
+							addToStorage(inputName[i] , inputURL[i]);
+							changeIFrame(selectElm());
+						}
+
 						selectElm().style.display = 'block';
 					}
 					else {
@@ -202,8 +221,8 @@ window.onload = (function() {
 	            }
 	        }
 
-        /*UTILS.removeClass(settingsBtn,'activeSet');
-		UTILS.removeClass(repContent,'activeRep');*/
+        UTILS.removeClass(settingsBtn,'activeSet');
+		UTILS.removeClass(repContent,'activeRep');
 	};
 
 	var addToSelect = function (selectElm, text, value) {
@@ -265,18 +284,18 @@ window.onload = (function() {
 	};
 
 	var storageToSelect = function() {
-
-		var option = document.createElement('option');
 		for (var i = 0; i < storage.length; i++) {
 			if (storage[i].tab ==='quick-reports') {
+				var option = document.createElement('option');
 				option.text = storage[i].name;
 				option.value = storage[i].url;
-				selectElm().add(option);
+				selQ.add(option);
 			}
 			if (storage[i].tab ==='my-team-folders') {
+				var option = document.createElement('option');
 				option.text = storage[i].name;
 				option.value = storage[i].url;
-				selectElm().add(option);
+				selM.add(option);
 			}
 			else {
 				return false;
@@ -342,6 +361,9 @@ window.onload = (function() {
 	UTILS.addEvent(cnclBtnQ, 'click', cancelBtn);
 	UTILS.addEvent(cnclBtnM, 'click', cancelBtn);
 	UTILS.addEvent(expnd, 'click', expand);
+	UTILS.addEvent(expnd1, 'click', expand);
+	UTILS.addEvent(expnd2, 'click', expand);
+	UTILS.addEvent(expnd3, 'click', expand);
 	UTILS.addEvent(tabContainer, 'click', changeHash);
 	// UTILS.addEvent(submitBtn,'click', validation);
 	UTILS.addEvent(submitBtnQ,'click', validation);

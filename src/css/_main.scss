@@ -107,15 +107,12 @@ header {
     background-color: black;
     margin: 0;
     height: 60px;
-
 }
 
 .layout-wrap {
     max-width: 1024px;
     margin: 0 auto;
     z-index: 0;
-
-
 }
 .layout-wrap > a {
     float: left;
@@ -152,7 +149,10 @@ header {
    ========================================================================== */
 
 .nav-section {
+    float: left;
     width: 32%;
+    /*margin-left: 2%;*/
+   /*width: 32%;*/
     display: inline-block;
     height: 124px;
     margin-top: 20px;
@@ -189,7 +189,8 @@ header {
 .sec2 {
     background: url(../../img/action-report-top.png) no-repeat center 50px;
     background-color: black;
-    margin: 0 1% 0 1%;
+     margin: 0 2% 0 2%;
+     margin-top: 20px;
 
 }
 
@@ -200,9 +201,9 @@ header {
 }
 #notification {
     background: #ebebeb;
-    width: 99.1%;
+    width: 100%;
     /*height: 36px;*/
-    padding: 0 1.5%;
+    padding: 0 1%;
     margin: 15px 1% 0 0;
     line-height: 3em;
     font-size: .8rem;
@@ -330,7 +331,7 @@ header {
    Tab content
    ========================================================================== */
 .tab-content-header {
-    width: 100%;
+    width: 96%;
     padding-top: 20px;
     position: relative;
     margin-bottom: 2px;
@@ -363,10 +364,17 @@ header {
 .action-btn.settingsM:focus,
 .action-btn.settingsM:active,
 .action-btn.settingsM:hover,
-.action-btn.expand:hover {
+.action-btn.expand1:hover,
+.action-btn.expand2:hover,
+.action-btn.expand3:hover,
+.action-btn.expand4:hover {
     background-color: white;
+
 }
-.action-btn.expand {
+.action-btn.expand1,
+.action-btn.expand2,
+.action-btn.expand3,
+.action-btn.expand4 {
     background-image: url(../../img/expand.png);
     right: 59px;
 }
@@ -457,10 +465,11 @@ iframe {
     margin: 50px 2% 0 2%;
 
 }
-#tab2 {
-    width: 100%;
+#tab2,
+#tab4 {
+    width: 96%;
     height: 800px;
-    margin-top: 60px;
+    margin-top: 75px;
 }
 
 

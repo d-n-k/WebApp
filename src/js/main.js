@@ -1,93 +1,99 @@
-/*globals UTILS*/
-window.onload = (function() {
+
+(function($) {
 	'use strict';
-	UTILS.ajax('data/notification.txt', {
-		method: 'GET',
-		done: function(response) {
-			document.getElementById('notification').innerHTML = response;
-		},
-		fail: function (err) {
-			document.getElementById('notification').style.display = 'none';
-		}
-	});
-	var tabContainer = UTILS.qs('.tab-hdrs'),
-		expnd = UTILS.qs('.expand1'),
-		expnd1 = UTILS.qs('.expand2'),
-		expnd2 = UTILS.qs('.expand3'),
-		expnd3 = UTILS.qs('.expand4'),
-		allTabs = UTILS.qsa('a[role="tab"]'),
-		cnclBtnQ = UTILS.qs('.cancel_btnQ'),
-		cnclBtnM = UTILS.qs('.cancel_btnM'),
-		submitBtnQ = UTILS.qs('.submit_btnQ'),
-		submitBtnM = UTILS.qs('.submit_btnM'),
-		inputName = UTILS.qsa('input[type=text]'),
-		inputURL = UTILS.qsa('input[type=url]'),
-		quickR = UTILS.qs('#quick-reports'),
-		fmyFolders = UTILS.qs('#fmy-folders'),
-		myteamReports = UTILS.qs('#my-team-folders'),
+	$.ajax({
+
+            url: 'data/config.json',
+            dataType: 'json'
+
+        })
+        .done(function (response) {
+            console.log(response);
+            if (response && response !== '') {
+                $notification.removeClass('hidden');
+                $notification.text(response.notification);
+                initDropDowns(response);
+            }
+        })
+        .fail(function(error){
+            $notification.addClass('hidden');
+            $notification.text(error);
+        });
+
+	var $tabContainer = $('.tab-hdrs'),
+		$notification = $('.notifications').eq(0),
+		$expnd = $('.expand1'),
+		$expnd1 = $('.expand2'),
+		$expnd2 = $('.expand3'),
+		$expnd3 = $('.expand4'),
+		$allTabs = $('a[role="tab"]'),
+		$cnclBtnQ = $('.cancel_btnQ'),
+		$cnclBtnM = $('.cancel_btnM'),
+		$submitBtnQ = $('.submit_btnQ'),
+		$submitBtnM = $('.submit_btnM'),
+		$inputName=$('input[type=text]'),
+		$inputURL =$('input[type=url]'),
+		$quickR = $('#quick-reports'),
+		$fmyFolders = $('#fmy-folders'),
+		$myteamReports = $('#my-team-folders'),
 		local, storageReports = [],
-		selQ = UTILS.qs('#choose-report-selectQ'),
-		selM = UTILS.qs('#choose-report-selectM'),
-		setBtnQ = UTILS.qs('.settingsQ'),
-		setBtnM = UTILS.qs('.settingsM'),
+		$selQ = $('#choose-report-selectQ'),
+		$selM = $('#choose-report-selectM'),
+		$setBtnQ = $('.settingsQ'),
+		$setBtnM = $('.settingsM'),
 		storage = JSON.parse(localStorage.getItem('storageReports')) || {};
 
 
-	/*var selectElm = (quickR.getAttribute('class').indexOf('active')> -1) ? 	+
-	UTILS.qs('#choose-report-selectQ') : UTILS.qs('#choose-report-selectM');
-	var settingsBtn = (quickR.getAttribute('class').indexOf('active')> -1) ? 	+
-	UTILS.qs('.settingsQ') : UTILS.qs('.settingsM');*/
-
 	var selectElm = function () {
-		if(quickR.getAttribute('class').indexOf('active')> -1) {
-			return UTILS.qs('#choose-report-selectQ');
+		if($quickR.attr('class').indexOf('active')> -1) {
+			return $('#choose-report-selectQ');
 		}
 		else {
-			return UTILS.qs('#choose-report-selectM');
+			return $('#choose-report-selectM');
 		}
 	};
 
 	var getContFrame = function () {
-		if(quickR.getAttribute('class').indexOf('active')> -1) {
-			return UTILS.qs('#tabQ');
+		if($quickR.attr('class').indexOf('active')> -1) {
+			return $('#tabQ');
 		}
-		if(myteamReports.getAttribute('class').indexOf('active')> -1) {
-			return UTILS.qs('#tabM');
+		if($myteamReports.attr('class').indexOf('active')> -1) {
+			return $('#tabM');
 		}
-		if(fmyFolders.getAttribute('class').indexOf('active')> -1) {
-			return UTILS.qs('#tab2');
+		if($fmyFolders.attr('class').indexOf('active')> -1) {
+			return $('#tab2');
 		}
 		else {
-			return UTILS.qs('#tab4');
+			return $('#tab4');
 		}
 	};
 	var settingsBtn = function () {
-		if(quickR.getAttribute('class').indexOf('active')> -1) {
-			return UTILS.qs('.settingsQ');
+		if($quickR.attr('class').indexOf('active')> -1) {
+			return $('.settingsQ');
 		}
 		else {
-			return UTILS.qs('.settingsM');
+			return $('.settingsM');
 		}
 	};
 	var repContent = function () {
-		if(quickR.getAttribute('class').indexOf('active')> -1) {
-			return UTILS.qs('.content-reportsQ');
+		if($quickR.attr('class').indexOf('active')> -1) {
+			return $('.content-reportsQ');
 		}
 		else {
-			return UTILS.qs('.content-reportsM');
+			return $('.content-reportsM');
 		}
 	};
 	var inpFocus = function () {
-		if(quickR.getAttribute('class').indexOf('active')> -1) {
-			return UTILS.qs('.site-nameQ');
+		if($quickR.attr('class').indexOf('active')> -1) {
+			return $('.site-nameQ');
 		}
 		else {
-			return UTILS.qs('.site-nameM');
+			return $('.site-nameM');
 		}
 	};
 
 	var getElmAttribute = function(elm) {
-	    return elm.getAttribute('href').split('#')[1];
+	    return elm.attr('href').split('#')[1];
 	};
 
 
@@ -101,29 +107,24 @@ window.onload = (function() {
 		var currentHash = location.hash.replace('panel-', '');
 
 		if (currentHash === '') {
-			currentHash =  allTabs[0].getAttribute('href');
+			currentHash =  $allTabs[0].getAttribute('href');
 		}
 
-		for (var i = 0; i < allTabs.length; i++) {
-			var currentElm = allTabs[i],
+		for (var i = 0; i < $allTabs.length; i++) {
+			var currentElm = $allTabs.eq(i),
 				currentElmAttr = getElmAttribute(currentElm),
 				currentActivePanel = getMatchingPanel(currentElm);
 
-			UTILS.removeClass(currentElm,'active');
-			UTILS.removeClass(currentActivePanel, 'active');
-			currentActivePanel.removeAttribute('aria-selected', 'true');
-			currentElm.removeAttribute('aria-selected', 'true');
-			currentActivePanel.setAttribute('aria-hidden', 'false');
-			currentElm.setAttribute('aria-hidden', 'false');
-
+			$(currentElm).removeClass('active').attr('aria-selected', 'true');
+			$(currentActivePanel).removeClass('active').attr('aria-selected', 'false');
+			$(currentActivePanel).attr('aria-hidden', 'false');
+			$(currentElm).attr('aria-hidden', 'false');
 
 			if(currentHash === ('#' + currentElmAttr)) {
-				UTILS.addClass(currentElm,'active');
-				UTILS.addClass(currentActivePanel,'active');
-				currentActivePanel.setAttribute('aria-selected', 'true');
-				currentElm.setAttribute('aria-selected', 'true');
-				currentActivePanel.removeAttribute('aria-hidden', 'true');
-				currentElm.removeAttribute('aria-hidden', 'true');
+				$(currentElm).addClass('active').attr('aria-selected', 'true');
+				$(currentActivePanel).addClass('active').attr('aria-selected', 'true');
+				$(currentActivePanel).attr('aria-hidden', 'false');
+				$(currentElm).attr('aria-hidden', 'false');
 			}
 		}
 		settingsBtn();
@@ -131,45 +132,41 @@ window.onload = (function() {
 		inpFocus();
 		selectElm();
 		getContFrame();
+		if ($selQ.html() !== '' || $selM.html() !== '') {
+				$(settingsBtn()).removeClass('activeSet');
+				$(repContent()).removeClass('activeRep');
+			}
 	};
 
 	var changeHash = function(e){
 		e.preventDefault();
-		var clicked = e.target,
-			tabAttr = getElmAttribute(clicked);
+		var $clicked = $(e.target),
+			tabAttr = getElmAttribute($clicked);
 
 		location.hash = 'panel-' + tabAttr.replace('#', '');
+
 
 	};
 
 	var toggleSettings = function(e) {
 		e.preventDefault();
-
-		var target = e.target,
-			targetAtt = target.getAttribute('class');
-
-		UTILS.addClass(target,'activeSet');
-		UTILS.addClass(repContent(),'activeRep');
+		var $target = $(e.target);
+		$target.toggleClass('activeSet');
+		repContent().toggleClass('activeRep');
 		inpFocus().focus();
-
-
-		if (targetAtt.indexOf('activeSet') > -1) {
-			UTILS.removeClass(target,'activeSet');
-		    UTILS.removeClass(repContent(),'activeRep');
-		}
 	};
 
 	var cancelBtn = function(e) {
 		e.preventDefault();
-		UTILS.removeClass(settingsBtn(),'activeSet');
-		UTILS.removeClass(repContent(),'activeRep');
+		settingsBtn().removeClass('activeSet');
+		repContent().removeClass('activeRep');
 
 	};
 
 	var expand = function(e) {
 		e.preventDefault();
 		var curentIframe = getContFrame(),
-			currentURL = curentIframe.src;
+			currentURL = $(curentIframe).attr('src');
 		window.open(currentURL, '_blank');
 		window.focus();
 	};
@@ -181,71 +178,67 @@ window.onload = (function() {
 	    var re = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/i;
 	/* jshint +W101 */
 
-			for (var i = 0; i < inputName.length; i++) {
+			for (var i = 0; i < $inputName.length; i++) {
 
-	            if (inputName[i].value !== '' && inputURL[i].value === '') {
-	                UTILS.addClass(inputURL[i],'invalid');
-	                inputURL[i].focus();
+	            if ($inputName.eq(i).val() !== '' && $inputURL.eq(i).val() === '') {
+	                $inputURL.eq(i).addClass('invalid');
+	                $inputURL.eq(i).focus();
 	            }
-	            else if (inputName[i].value === '' && inputURL[i].value !== '') {
-	                UTILS.addClass(inputName[i],'invalid');
-	                inputName[i].focus();
+	            else if ($inputName.eq(i).val() === '' && $inputURL.eq(i).val() !== '') {
+	                $inputName.eq(i).addClass('invalid');
+	                $inputName.eq(i).focus();
 	            }
-	            else if(inputName[i].value !== '' && inputURL[i].value !== '') {
-	            	UTILS.removeClass(inputName[i] ,'invalid');
-	            	UTILS.removeClass(inputURL[i] ,'invalid');
-	            	UTILS.addEvent(inputName[i],'keydown',keypressDelete);
-	            	if (inputURL[i].value.substring(0, 4) !== 'http') { // http protocol
-					 	inputURL[i].value = 'http://' + inputURL[i].value;
+	            else if($inputName.eq(i).val() !== '' && $inputURL.eq(i).val() !== '') {
+	            	$inputName.eq(i).removeClass('invalid');
+	            	$inputURL.eq(i).removeClass('invalid');
+
+	            	if ($inputURL.eq(i).val().substring(0, 4) !== 'http') { // http protocol
+					 	$inputURL.eq(i).val('http://' + $inputURL.eq(i).val());
 				    }
-				    if (re.test(inputURL[i].value)){ // url validation
-		    			UTILS.removeClass(inputURL[i] ,'invalid');
-						if((quickR.getAttribute('class').indexOf('active') === -1) && i>2) {
-							addToSelect(selectElm(), inputName[i].value, inputURL[i].value);
-							addToStorage(inputName[i] , inputURL[i]);
+				    if (re.test($inputURL.eq(i).val())){ // url validation
+		    			$inputURL.eq(i).removeClass('invalid');
+						if(($quickR.attr('class').indexOf('active') === -1) && i>2) {
+							addToSelect(selectElm(), $inputName[i].value, $inputURL[i].value);
+							addToStorage($inputName[i] , $inputURL[i]);
 							changeIFrame(selectElm());
 						}
-						if((quickR.getAttribute('class').indexOf('active') > -1) && i<2) {
-							addToSelect(selectElm(), inputName[i].value, inputURL[i].value);
-							addToStorage(inputName[i] , inputURL[i]);
+						if(($quickR.attr('class').indexOf('active')> -1) && i<2) {
+							addToSelect(selectElm(), $inputName[i].value, $inputURL[i].value);
+							addToStorage($inputName[i] , $inputURL[i]);
 							changeIFrame(selectElm());
 						}
 
-						selectElm().style.display = 'block';
+						selectElm().show();
 					}
 					else {
-		  				UTILS.addClass(inputName[i],'invalid');
+		  				$inputName.eq(i).addClass('invalid');
 		  			}
-		  			UTILS.removeClass(settingsBtn(),'activeSet');
-					UTILS.removeClass(repContent(),'activeRep');
+		  			$(settingsBtn()).removeClass('activeSet');
+					$(repContent()).removeClass('activeRep');
 	            }
+	            $inputName.eq(i).keydown(keypressDelete);
+	            $(settingsBtn()).removeClass('activeSet');
+				$(repContent()).removeClass('activeRep');
 	        }
 
-        UTILS.removeClass(settingsBtn,'activeSet');
-		UTILS.removeClass(repContent,'activeRep');
+        $(settingsBtn()).removeClass('activeSet');
+		$(repContent()).removeClass('activeRep');
 	};
 
 	var addToSelect = function (selectElm, text, value) {
 		if (!text || !value) {
 			return false;
 		}
-		if(quickR.getAttribute('class').indexOf('active')> -1) {
-			var option = document.createElement('option');
-
-			option.text = text;
-			option.value = value;
-			selQ.add(option);
+		if($quickR.attr('class').indexOf('active')> -1) {
+			createSelectOption($selQ, text, value);
 		}
 		else {
-			var option = document.createElement('option');
-
-			option.text = text;
-			option.value = value;
-			selM.add(option);
+			createSelectOption($selM, text, value);
 		}
 	};
 	var removeFromSelect = function () {
-		selectElm().removeChild(selectElm().firstChild);
+		selectElm().find('option:first-child').remove();
+
 	};
 
 	//check if local storage is supported
@@ -259,7 +252,7 @@ window.onload = (function() {
 	var addToStorage = function (name, url) {
 		if (localStorageSupported()) {
 			local = {
-			tab: getContFrame().offsetParent.id,
+			tab: getContFrame().parent().attr('id'),
 	    	name: name.value,
 	    	url: url.value
 	    	};
@@ -269,40 +262,36 @@ window.onload = (function() {
 	};
 
 	var changeIFrame = function (select) {
-			if (quickR.getAttribute('class').indexOf('active')> -1) {
+			if ($quickR.attr('class').indexOf('active')> -1) {
 				if (select !== null || undefined) {
-					var selectedOptionValue = select.options[select.selectedIndex].value;
-					UTILS.qs('#tabQ').src = selectedOptionValue;
+					var selectedOptionValue = select.find('option').val();
+					$('#tabQ').attr('src',selectedOptionValue);
 				}
 			}
-			else {
-				if (select !== null || undefined) {
-					var selectedOptionValue = select.options[select.selectedIndex].value;
-					UTILS.qs('#tabM').src = selectedOptionValue;
-				}
+			else if (select !== null || undefined) {
+					var selectedOptionValue = select.find('option').val();
+					$('#tabM').attr('src',selectedOptionValue);
 			}
 	};
 
 	var storageToSelect = function() {
 		for (var i = 0; i < storage.length; i++) {
 			if (storage[i].tab ==='quick-reports') {
-				var option = document.createElement('option');
-				option.text = storage[i].name;
-				option.value = storage[i].url;
-				selQ.add(option);
+				createSelectOption($selQ, storage[i].name, storage[i].url);
 			}
 			if (storage[i].tab ==='my-team-folders') {
-				var option = document.createElement('option');
-				option.text = storage[i].name;
-				option.value = storage[i].url;
-				selM.add(option);
+				createSelectOption($selM, storage[i].name, storage[i].url);
 			}
 			else {
 				return false;
 			}
 		}
 	};
-
+	var createSelectOption = function (elm, text, value){
+		var o = new Option(text, value);
+		$(o).html(text);
+		elm.append(o);
+	};
 
 	var keypressOpenTab = function(e){
 		e.preventDefault();
@@ -321,23 +310,46 @@ window.onload = (function() {
 	};
 	var init = function () {
 		if (localStorage.getItem('storageReports')) {
-			UTILS.removeClass(settingsBtn(),'activeSet');
-			UTILS.removeClass(repContent(),'activeRep');
-			if (selQ.innerHTML !== '') {
-				UTILS.qs('#tabQ').src = selQ.options[selQ.selectedIndex].value;
+			$(settingsBtn()).removeClass('activeSet');
+			$(repContent()).removeClass('activeRep');
+			if ($selQ.html() !== '') {
+				$('#tabQ').attr('src', $selQ.find('option').val());
+				$(settingsBtn()).removeClass('activeSet');
+				$(repContent()).removeClass('activeRep');
 			}
-			if (selM.innerHTML !== '') {
-				UTILS.qs('#tabM').src = selM.options[selM.selectedIndex].value;
+			if ($selM.html() !== '') {
+				$('#tabM').attr('src', $selM.find('option').val());
+				$(settingsBtn()).removeClass('activeSet');
+				$(repContent()).removeClass('activeRep');
 			}
-
 		}
 		else {
-			UTILS.addClass(settingsBtn(),'activeSet');
-			UTILS.addClass(repContent(),'activeRep');
-			selM.style.display = 'none';
-			selQ.style.display = 'none';
+			$(settingsBtn()).addClass('activeSet');
+			$(repContent()).addClass('activeRep');
+			$selM.hide();
+			$selQ.hide();
 		}
+		if ($selQ.html() === '') {
+				$selQ.hide();
+				$(settingsBtn()).addClass('activeSet');
+				$(repContent()).addClass('activeRep');
+			}
+		if ($selM.html() === '') {
+				$selM.hide();
+				$(settingsBtn()).addClass('activeSet');
+				$(repContent()).addClass('activeRep');
+			}
 	};
+	var initDropDowns = function(response) {
+			var quickActions = response.quickActions,
+				src = $('#nav-sections').html(),
+				template = Handlebars.compile(src),
+				html = template(quickActions),
+				$navigation = $('#navigation');
+
+			$navigation.html(html);
+		};
+
 /*
 	var escToClose = function(e){
 		var target = e.target;
@@ -355,25 +367,22 @@ window.onload = (function() {
 	getContFrame();
 	init();
 
-	// UTILS.addEvent(settingsBtn(), 'click', toggleSettings);
-	UTILS.addEvent(setBtnQ, 'click', toggleSettings);
-	UTILS.addEvent(setBtnM, 'click', toggleSettings);
-	UTILS.addEvent(cnclBtnQ, 'click', cancelBtn);
-	UTILS.addEvent(cnclBtnM, 'click', cancelBtn);
-	UTILS.addEvent(expnd, 'click', expand);
-	UTILS.addEvent(expnd1, 'click', expand);
-	UTILS.addEvent(expnd2, 'click', expand);
-	UTILS.addEvent(expnd3, 'click', expand);
-	UTILS.addEvent(tabContainer, 'click', changeHash);
-	// UTILS.addEvent(submitBtn,'click', validation);
-	UTILS.addEvent(submitBtnQ,'click', validation);
-	UTILS.addEvent(submitBtnM,'click', validation);
-	UTILS.addEvent(tabContainer, 'keypress', keypressOpenTab);
-	UTILS.addEvent(window, 'hashchange', setTab);
-	UTILS.addEvent(selectElm(), 'change', function () {
-		changeIFrame(this);
-	});
+
+	$setBtnQ.click(toggleSettings);
+	$setBtnM.click(toggleSettings);
+	$cnclBtnQ.click(cancelBtn);
+	$cnclBtnM.click(cancelBtn);
+	$expnd.click(expand);
+	$expnd1.click(expand);
+	$expnd2.click(expand);
+	$expnd3.click(expand);
+	$tabContainer.click(changeHash);
+	$submitBtnQ.click(validation);
+	$submitBtnM.click(validation);
+	$tabContainer.keypress(keypressOpenTab);
+	$(window).bind('hashchange',setTab);
+	$(selectElm()).change(function () {changeIFrame(this)});
 
 
 
-})();
+})(jQuery);

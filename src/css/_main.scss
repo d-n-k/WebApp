@@ -151,8 +151,6 @@ header {
 .nav-section {
     float: left;
     width: 32%;
-    /*margin-left: 2%;*/
-   /*width: 32%;*/
     display: inline-block;
     height: 124px;
     margin-top: 20px;
@@ -181,12 +179,12 @@ header {
     display: block;
     width: 100%;
 }
-.sec1 {
+.sec0 {
     background: url(../../img/action-report-new.png) no-repeat center 50px;
     background-color: black;
 
 }
-.sec2 {
+.sec1 {
     background: url(../../img/action-report-top.png) no-repeat center 50px;
     background-color: black;
      margin: 0 2% 0 2%;
@@ -194,7 +192,7 @@ header {
 
 }
 
-.sec3 {
+.sec2 {
     background: url(../../img/actions-help.png) no-repeat center 50px;
     background-color: black;
 
@@ -256,11 +254,15 @@ header {
 .action-list li a {
     text-decoration: none;
     display: block;
-    color: #a5a5a5;
+    color: black;
     margin-left: 10px;
     margin-right: 10px;
     border-bottom: 1px solid lightgrey;
     font-size: 0.8em;
+    line-height: 1.6em;
+}
+.action-list li a:hover {
+    color: blue;
 }
 .action-list li {
     background-color: #EBEBEB;
@@ -279,7 +281,7 @@ header {
     float: left;
     width: 22.5%;
     height: 50px;
-    margin-right: 2%;
+    margin: 20px 2% 0 0;
     line-height: 50px;
     text-align: center;
     font-size: .8rem;
@@ -376,13 +378,13 @@ header {
 .action-btn.expand3,
 .action-btn.expand4 {
     background-image: url(../../img/expand.png);
-    right: 59px;
+    right: 4%;
 }
 
 .action-btn.settingsQ,
 .action-btn.settingsM {
     background-image: url(../../img/settings.png);
-    right: 2%;
+    right: -2%;
     /* background-color: white; */
 
 }

@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>WebApp - jQuery</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -34,65 +34,28 @@
             <div class="page-body layout-wrap clearfix">
                 <div class="notifications" id="notification">wannabe dynamic
                 </div>
+                <nav class="justify" id="navigation" role="navigation"></nav>
 
-                <nav class="clearfix">
-                    <div class="nav-section sec1">
-                        <p class="psection"><span>Select</span>Reporting Platform</p>
+                <script id="nav-sections" type="text/template">
+                    {{#each this}}
+                        <div class="nav-section sec{{@index}}"  tabindex="0" aria-describedby="nav-{{@index}}">
+                            <p class="psection">{{{label}}}</p>
+                            <div class="menu" role="menubar">
+                                <div class="menu-hint" id="menu-hint-{{@index}}">
+                                    <p>{{actionsLabel}}</p>
+                                    <div class="arrow"></div>
+                                </div>
 
-                        <div class="menu">
-                            <div class="menu-hint">
-                                <p>Choose QS report</p>
-                                <div class="arrow"></div>
+                                <ul class="action-list" aria-describedby="menu-hint-{{@index}}">
+                                {{#each actions}}
+                                    <li role="menuitem"><a href={{url}} tabindex="0" target="_blank">{{label}}</a></li>
+                                {{/each}}
+                                </ul>
                             </div>
-
-                            <ul class="action-list">
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                            </ul>
                         </div>
-                    </div>
+                    {{/each}}
+                </script>
 
-                    <div class="nav-section sec2">
-                        <p class="psection"><span>Select</span>Dashboard</p>
-
-                        <div class="menu">
-                            <div class="menu-hint">
-                                <p>Choose dashboard</p>
-                                <div class="arrow"></div>
-                            </div>
-
-                            <ul class="action-list">
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="nav-section sec3">
-                        <p class="psection"><span>Help &amp;</span>Tutorials</p>
-
-                        <div class="menu">
-                            <div class="menu-hint">
-                                <p>Choose guide</p>
-                                <div class="arrow"></div>
-                            </div>
-
-                            <ul class="action-list">
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                                <li><a href="#">link</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
 
                 <div class="tabs" role="tablist">
                     <ul class="tab-hdrs clearfix">
@@ -111,7 +74,7 @@
                             <a class="action-btn expand1" href="">expand</a>
                             <a class="action-btn settingsQ" href="">settings</a>
                         </div>
-                        <div class="content-reportsQ activeRep">
+                        <div class="content-reportsQ">
                             <form class="reports" id="form">
                                 <fieldset class="report-row">
                                     <span>Report 01</span>
@@ -157,7 +120,7 @@
                             <a class="action-btn expand3" href="">expand</a>
                             <a class="action-btn settingsM" href="">settings</a>
                         </div>
-                        <div class="content-reportsM activeRep">
+                        <div class="content-reportsM">
                             <form class="reports" id="form">
                                 <fieldset class="report-row">
                                     <span>Report 01</span>
@@ -201,9 +164,10 @@
                 </div>
             </div>
         </div>
-        <script src="js/plugins.js"></script>
-        <script src="public/js/main.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <!-- <script src="js/plugins.js"></script> -->
+        <script src="vendor/handlebars-v2.0.0.js"></script>
+        <script src="public/js/main.min.js"></script>
     </body>
 </html>

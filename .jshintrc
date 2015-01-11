@@ -65,6 +65,7 @@
         "$",
         "jQuery",
         "Modernizr",
+        "Handlebars",
         "console"
     ],
     "maxerr": 100

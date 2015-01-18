@@ -202,7 +202,7 @@
 							addToStorage($inputName[i] , $inputURL[i]);
 							changeIFrame(selectElm());
 						}
-						if(($quickR.attr('class').indexOf('active')> -1) && i<2) {
+						if(($quickR.attr('class').indexOf('active')> -1) && i<=2) {
 							addToSelect(selectElm(), $inputName[i].value, $inputURL[i].value);
 							addToStorage($inputName[i] , $inputURL[i]);
 							changeIFrame(selectElm());
@@ -282,15 +282,28 @@
 			if (storage[i].tab ==='my-team-folders') {
 				createSelectOption($selM, storage[i].name, storage[i].url);
 			}
-			else {
-				return false;
-			}
 		}
 	};
 	var createSelectOption = function (elm, text, value){
 		var o = new Option(text, value);
 		$(o).html(text);
 		elm.append(o);
+	};
+	var formPopulation = function () {
+
+		for (var i = 0; i < $inputName.length; i++) {
+			if (i<=2) {
+					$inputName.eq(i).val($selQ.children().eq(i).html());
+					$inputURL.eq(i).val($selQ.children().eq(i).val());
+					$inputName.eq(i).keydown(keypressDelete);
+			}
+			if (i>2) {
+					$inputName.eq(i).val($selM.children().eq(i-3).html());
+					$inputURL.eq(i).val($selM.children().eq(i-3).val());
+					$inputName.eq(i).keydown(keypressDelete);
+			}
+		}
+
 	};
 
 	var keypressOpenTab = function(e){
@@ -311,11 +324,11 @@
 	var init = function () {
 		if (localStorage.getItem('storageReports')) {
 			$(settingsBtn()).removeClass('activeSet');
-			$(repContent()).removeClass('activeRep');
+			/*$(repContent()).removeClass('activeRep');*/
 			if ($selQ.html() !== '') {
 				$('#tabQ').attr('src', $selQ.find('option').val());
 				$(settingsBtn()).removeClass('activeSet');
-				$(repContent()).removeClass('activeRep');
+				/*$(repContent()).removeClass('activeRep');*/
 			}
 			if ($selM.html() !== '') {
 				$('#tabM').attr('src', $selM.find('option').val());
@@ -364,6 +377,7 @@
 
 	setTab();
 	storageToSelect();
+	formPopulation();
 	getContFrame();
 	init();
 
@@ -381,7 +395,7 @@
 	$submitBtnM.click(validation);
 	$tabContainer.keypress(keypressOpenTab);
 	$(window).bind('hashchange',setTab);
-	$(selectElm()).change(function () {changeIFrame(this)});
+	$(selectElm()).change(function () {changeIFrame($(selectElm()))});
 
 
 

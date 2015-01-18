@@ -250,6 +250,8 @@ header {
     display: none;
     padding-left: 0;
     margin: 0;
+    border: 1px solid lightgrey;
+    border-top: 0px;
 }
 .action-list li a {
     text-decoration: none;
@@ -257,41 +259,48 @@ header {
     color: black;
     margin-left: 10px;
     margin-right: 10px;
-    border-bottom: 1px solid lightgrey;
     font-size: 0.8em;
     line-height: 1.6em;
+    border-bottom: 1px solid lightgrey;
 }
 .action-list li a:hover {
     color: blue;
 }
 .action-list li {
-    background-color: #EBEBEB;
+    background-color: white;
+    border-top: 0px;
+    overflow: hidden;
+    padding: 0px 0px;
 }
 
 /* ==========================================================================
    Tabs
    ========================================================================== */
 
-.tabs {
+.tab-hdrs {
     width: 100%;
-
+    padding: 0;
 }
-
 .tab-hdrs li {
     float: left;
-    width: 22.5%;
+    display: inline-block;
+    width: 23.5%;
     height: 50px;
-    margin: 20px 2% 0 0;
+    margin: 20px 0 0 2%;
     line-height: 50px;
     text-align: center;
     font-size: .8rem;
     text-decoration: none;
     list-style: none;
 }
+.tab-hdrs li:first-child {
+    margin-left: 0;
+}
 
 .tab-hdrs li > a {
     background: #646464;
     color: #fff;
+    width: 100%;
     display: block;
     font-size: inherit;
     text-decoration: none;
